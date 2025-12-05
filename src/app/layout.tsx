@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import { Provider } from "react-redux";
-import { store } from "@/store/store";
+import Header from "../components/header/Header";
+import { store } from "../store/store";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Trip Coach",
