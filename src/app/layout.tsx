@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Provider } from "react-redux";
 import Header from "../components/header/Header";
-import { store } from "../store/store";
+import { Providers } from "../components/Providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Trip Coach",
   description: "Explore the world with Trip Coach",
+  icons: {
+    icon: "/tripCoach.jpg",
+  },
 };
 
 export default function RootLayout({
@@ -17,10 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Provider store={store}>
+        <Providers>
           <Header />
           <main className="max-w-6xl mx-auto p-4">{children}</main>
-        </Provider>
+        </Providers>
       </body>
     </html>
   );

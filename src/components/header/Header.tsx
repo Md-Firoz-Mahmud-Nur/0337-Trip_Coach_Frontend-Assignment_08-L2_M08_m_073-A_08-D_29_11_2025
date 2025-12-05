@@ -1,15 +1,17 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 // import { useAuthStore } from "@/lib/store";
-import { FaMapMarkerAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { FaSignOutAlt, FaUser } from "react-icons/fa";
 
 export default function Header() {
   const router = useRouter();
   // const { user, token, logout } = useAuthStore();
 
-  const user=null
+  const user = null;
+  const token = null;
 
   const handleLogout = () => {
     // logout();
@@ -22,7 +24,14 @@ export default function Header() {
         <Link
           href="/"
           className="flex items-center gap-2 font-bold text-2xl text-blue-600">
-          <FaMapMarkerAlt /> Local Guide
+          <Image
+            src="/tripCoach.jpg"
+            alt="Trip Coach Logo"
+            width={40}
+            height={40}
+            className="rounded"
+          />
+          Trip Coach
         </Link>
 
         <nav className="hidden md:flex gap-6 items-center">
