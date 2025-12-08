@@ -10,12 +10,20 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export default function LoginPage() {
+export default function RegisterPage() {
+  const router = useRouter();
   const setAuth = useAuthStore((state) => state.setAuth);
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "TOURIST",
+  });
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -24,20 +32,16 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const { data } = await api.post("/auth/login", formData);
-
-      console.log({ data });
-
+      const { data } = await api.post("/user/register", formData);
       setAuth({
         user: data.data.user,
         accessToken: data.data.accessToken,
         refreshToken: data.data.refreshToken,
       });
-
-      toast.success("Login successful!");
-      // router.push("/dashboard");
+      toast.success("Registration successful!");
+      router.push("/dashboard");
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Login failed");
+      toast.error(error.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -45,13 +49,23 @@ export default function LoginPage() {
 
   return (
     <>
-      {" "}
       <main className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="bg-white rounded-lg shadow p-8 w-full max-w-md">
-          <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
-          <p className="text-gray-600 mb-6">Login to your account</p>
+          <h1 className="text-3xl font-bold mb-2">Create Account</h1>
+          <p className="text-gray-600 mb-6">Join our community today</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 gap-4">
+              <input
+                type="text"
+                name="name"
+                placeholder=" Name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-600"
+              />
+            </div>
             <input
               type="email"
               name="email"
@@ -70,18 +84,26 @@ export default function LoginPage() {
               required
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-600"
             />
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-600">
+              <option value="TOURIST">Tourist</option>
+              <option value="GUIDE"> Guide</option>
+            </select>
             <button
               type="submit"
               disabled={loading}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold disabled:opacity-50">
-              {loading ? "Logging in..." : "Login"}
+              {loading ? "Registering..." : "Register"}
             </button>
           </form>
 
           <p className="text-center mt-6 text-gray-600">
-            Don&apos;t have an account?{" "}
-            <Link href="/auth/register" className="text-blue-600 font-semibold">
-              Register here
+            Already have an account?{" "}
+            <Link href="/auth/login" className="text-blue-600 font-semibold">
+              Login here
             </Link>
           </p>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FaStar, FaSearch, FaUsers, FaCamera, FaClock } from "react-icons/fa";
+import { FaCamera, FaClock, FaSearch, FaStar, FaUsers } from "react-icons/fa";
 // import Header from "@/components/header";
 // import Footer from "@/components/footer";
 
@@ -58,7 +58,7 @@ export default function Home() {
       {/* <Header /> */}
       <main>
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-20 px-4">
+        <section className="bg-linear-to-r from-blue-600 to-blue-700 text-white py-20 px-4">
           <div className="max-w-5xl mx-auto text-center space-y-6">
             <h1 className="text-5xl font-bold">Experience Like a Local</h1>
             <p className="text-xl opacity-90">
@@ -131,7 +131,7 @@ export default function Home() {
                 <div
                   key={idx}
                   className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden">
-                  <div className="h-40 bg-gradient-to-br from-blue-400 to-blue-600"></div>
+                  <div className="h-40 bg-linear-to-br from-blue-400 to-blue-600"></div>
                   <div className="p-6">
                     <h3 className="text-xl font-bold">{guide.name}</h3>
                     <p className="text-gray-500 text-sm">{guide.city}</p>
