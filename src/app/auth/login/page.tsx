@@ -26,9 +26,17 @@ export default function LoginPage() {
 
     try {
       const { data } = await api.post("/auth/login", formData);
-      setAuth(data.data.user, data.data.token);
+
+      console.log({ data });
+
+      setAuth({
+        user: data.data.user,
+        accessToken: data.data.accessToken,
+        refreshToken: data.data.refreshToken,
+      });
+
       toast.success("Login successful!");
-      router.push("/dashboard");
+      // router.push("/dashboard");
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Login failed");
     } finally {

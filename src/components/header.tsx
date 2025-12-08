@@ -8,12 +8,12 @@ import { FaSignOutAlt, FaUser } from "react-icons/fa";
 
 export default function Header() {
   const router = useRouter();
-  const { user, token, logout } = useAuthStore();
+  const { user, accessToken, logout } = useAuthStore();
 
-  console.log({ user, token, logout });
+  console.log({ user, accessToken, logout });
 
   const handleLogout = () => {
-    // logout();
+    logout();
     router.push("/");
   };
 
@@ -37,12 +37,12 @@ export default function Header() {
           <Link href="/explore" className="hover:text-blue-600">
             Explore
           </Link>
-          {user?.role === "guide" && (
+          {user?.role === "GUIDE" && (
             <Link href="/dashboard/guide" className="hover:text-blue-600">
               My Tours
             </Link>
           )}
-          {user?.role === "admin" && (
+          {user?.role === "ADMIN" && (
             <Link href="/dashboard/admin" className="hover:text-blue-600">
               Admin
             </Link>
@@ -50,7 +50,7 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-4">
-          {token ? (
+          {accessToken ? (
             <>
               <Link
                 href="/dashboard/profile"
