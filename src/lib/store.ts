@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import Cookies from "js-cookie";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 interface User {
   id: string;
@@ -20,6 +22,18 @@ type AuthState = {
   logout: () => void;
 };
 
+// ✅ Cookie storage wrapper
+const cookieStorage = createJSONStorage(() => ({
+  getItem: (name: string) => {
+    const cookie = Cookies.get(name);
+    return cookie ? cookie : null;
+  },
+  setItem: (name: string, value: any) => {
+    Cookies.set(name, JSON.stringify(value), { expires: 7, path: "/" });
+  },
+  removeItem: (name: string) => Cookies.remove(name),
+}));
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
@@ -27,9 +41,12 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       refreshToken: null,
       setAuth: ({ user, accessToken, refreshToken }) =>
-        set({ user, accessToken: accessToken, refreshToken }),
+        set({ user, accessToken, refreshToken }),
       logout: () => set({ user: null, accessToken: null, refreshToken: null }),
     }),
-    { name: "auth-storage" }
+    {
+      name: "auth-storage",
+      storage: cookieStorage,
+    }
   )
 );
