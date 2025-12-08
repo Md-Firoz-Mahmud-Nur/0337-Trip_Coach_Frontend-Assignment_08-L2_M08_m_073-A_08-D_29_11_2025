@@ -1,17 +1,16 @@
 "use client";
 
+import { useAuthStore } from "@/src/lib/store";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-// import { useAuthStore } from "@/lib/store";
 import { FaSignOutAlt, FaUser } from "react-icons/fa";
 
 export default function Header() {
   const router = useRouter();
-  // const { user, token, logout } = useAuthStore();
+  const { user, token, logout } = useAuthStore();
 
-  const user = null;
-  const token = null;
+  console.log({ user, token, logout });
 
   const handleLogout = () => {
     // logout();
