@@ -57,10 +57,6 @@ export default function AdminSidebar() {
           );
         })}
       </nav>
-
-      <div className="border-t border-slate-200 px-4 py-3 text-xs text-slate-400">
-        Trip Coach Admin Panel
-      </div>
     </aside>
   );
 }
