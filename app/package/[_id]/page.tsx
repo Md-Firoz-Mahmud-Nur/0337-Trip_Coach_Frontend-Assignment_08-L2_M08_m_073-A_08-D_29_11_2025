@@ -75,9 +75,6 @@ export default function PackageDetailPage() {
             <AlertCircle size={20} className="mt-0.5 shrink-0" />
             <div>
               <p className="font-medium">{error || "Package not found"}</p>
-              <p className="mt-1 text-sm">
-                Make sure backend is running at http://localhost:5000/api/v1
-              </p>
             </div>
           </div>
         </div>
@@ -86,9 +83,7 @@ export default function PackageDetailPage() {
   }
 
   const mainImage =
-    pkg.images && pkg.images.length > 0
-      ? pkg.images[0]
-      : "/pexels-dreamlensproduction-2450296.jpg";
+    pkg.images && pkg.images.length > 0 ? pkg.images[0] : "/dummy.jpg";
 
   const handleBookNow = async () => {
     if (!pkg?._id) return;
@@ -131,7 +126,7 @@ export default function PackageDetailPage() {
         <div className="overflow-hidden rounded-2xl bg-slate-200">
           <div className="relative aspect-video">
             <Image
-              src={mainImage || "/placeholder.svg"}
+              src={mainImage}
               alt={pkg.title}
               fill
               className="object-cover"

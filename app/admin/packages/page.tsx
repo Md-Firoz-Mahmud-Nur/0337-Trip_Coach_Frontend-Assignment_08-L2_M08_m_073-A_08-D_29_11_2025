@@ -247,7 +247,7 @@ export default function AdminPackages() {
         );
 
   return (
-    <div className="p-6 space-y-6 bg-gradient-to-b from-sky-50 via-white to-sky-50">
+    <div className="p-6 space-y-6 ">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-slate-900">

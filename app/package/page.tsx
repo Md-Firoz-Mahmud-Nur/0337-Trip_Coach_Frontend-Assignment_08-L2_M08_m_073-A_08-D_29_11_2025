@@ -57,9 +57,6 @@ export default function PackagesPage() {
             <div>
               <p className="font-medium">Error loading packages</p>
               <p className="text-sm">{error}</p>
-              <p className="mt-2 text-xs opacity-75">
-                Make sure backend is running at http://localhost:5000
-              </p>
             </div>
           </div>
         )}

@@ -80,9 +80,6 @@ export default function AdminPayments() {
             <AlertCircle size={20} className="mt-0.5 shrink-0" />
             <div>
               <p className="font-medium">{error}</p>
-              <p className="mt-1 text-xs">
-                Make sure backend is running at http://localhost:5000/api/v1
-              </p>
             </div>
           </div>
         )}
