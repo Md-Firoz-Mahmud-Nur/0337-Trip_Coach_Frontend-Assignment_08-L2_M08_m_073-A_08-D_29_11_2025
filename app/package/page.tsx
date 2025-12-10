@@ -34,7 +34,7 @@ export default function PackagesPage() {
   }, [dispatch, items.length]);
 
   return (
-    <div className="min-h-[calc(100vh-theme(space.16))] bg-slate-50 py-12">
+    <div className="min-h-screen bg-slate-50 py-12">
       <div className="container mx-auto px-4">
         <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>

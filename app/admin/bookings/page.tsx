@@ -317,7 +317,7 @@ export default function AdminBookings() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-theme(space.16))] bg-slate-50 p-6">
+    <div className="min-h-screen bg-slate-50 p-6">
       <div className="mx-auto max-w-6xl space-y-6">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">

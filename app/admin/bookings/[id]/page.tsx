@@ -51,7 +51,7 @@ function BookingDetailsPageInner() {
 
   if (isLoading) {
     return (
-      <div className="min-h-[calc(100vh-theme(space.16))] flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <Loader2 className="animate-spin text-blue-600" size={32} />
       </div>
     );
@@ -59,7 +59,7 @@ function BookingDetailsPageInner() {
 
   if (error) {
     return (
-      <div className="min-h-[calc(100vh-theme(space.16))] bg-slate-50">
+      <div className="min-h-screen bg-slate-50">
         <div className="mx-auto max-w-5xl p-6 space-y-4">
           <Button
             variant="ghost"
@@ -79,7 +79,7 @@ function BookingDetailsPageInner() {
 
   if (!booking) {
     return (
-      <div className="min-h-[calc(100vh-theme(space.16))] bg-slate-50">
+      <div className="min-h-screen bg-slate-50">
         <div className="mx-auto max-w-5xl p-6">
           <Button
             variant="ghost"
@@ -124,7 +124,7 @@ function BookingDetailsPageInner() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-theme(space.16))] bg-slate-50">
+    <div className="min-h-screen bg-slate-50">
       <div className="mx-auto max-w-6xl p-6 space-y-6">
         <div className="flex items-center justify-between gap-3">
           <Button

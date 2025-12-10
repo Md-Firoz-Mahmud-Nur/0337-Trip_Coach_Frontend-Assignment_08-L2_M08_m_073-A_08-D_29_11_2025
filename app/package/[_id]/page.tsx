@@ -61,7 +61,7 @@ export default function PackageDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-[calc(100vh-theme(space.16))] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="animate-spin text-blue-600" size={32} />
       </div>
     );
@@ -69,7 +69,7 @@ export default function PackageDetailPage() {
 
   if (error || !pkg) {
     return (
-      <div className="min-h-[calc(100vh-theme(space.16))] bg-slate-50 py-12">
+      <div className="min-h-screen bg-slate-50 py-12">
         <div className="container mx-auto px-4">
           <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700">
             <AlertCircle size={20} className="mt-0.5 shrink-0" />

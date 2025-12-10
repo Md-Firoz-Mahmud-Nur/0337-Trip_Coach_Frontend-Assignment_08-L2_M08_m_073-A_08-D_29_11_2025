@@ -1,37 +1,13 @@
-// "use client";
-
-// import { Button } from "@/components/ui/button";
-// import { useRouter } from "next/navigation";
-
-// export default function NotFoundPage() {
-//   const router = useRouter();
-
-//   return (
-//     <div className="min-h-[calc(100vh-theme(space.16))] flex items-center justify-center">
-//       <div className="text-center space-y-4">
-//         <h1 className="text-4xl font-bold">404 - Page not found</h1>
-//         <p className="text-muted-foreground">
-//           The page you are looking for does not exist.
-//         </p>
-//         <Button onClick={() => router.push("/")}>Go Home</Button>
-//       </div>
-//     </div>
-//   );
-// }
-
-
 "use client";
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-// Optional: if you already use an icon library
-// import { Compass } from "lucide-react";
 
 export default function NotFoundPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-[calc(100vh-theme(space.16))] flex items-center justify-center bg-slate-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
       <div className="max-w-lg text-center">
         <div className="relative mx-auto mb-8 h-40 w-40">
           <div className="absolute inset-0 rounded-full bg-blue-100" />
@@ -74,4 +50,3 @@ export default function NotFoundPage() {
     </div>
   );
 }
-

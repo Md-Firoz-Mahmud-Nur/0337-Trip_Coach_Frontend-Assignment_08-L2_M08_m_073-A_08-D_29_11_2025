@@ -42,7 +42,7 @@ export default function PaymentDetailsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-[calc(100vh-theme(space.16))] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="animate-spin text-primary" size={32} />
       </div>
     );
