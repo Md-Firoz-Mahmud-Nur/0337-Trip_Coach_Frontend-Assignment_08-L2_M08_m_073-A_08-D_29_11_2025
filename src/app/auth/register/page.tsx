@@ -33,6 +33,7 @@ export default function RegisterPage() {
 
     try {
       const { data } = await api.post("/user/register", formData);
+      console.log({ data });
       setAuth({
         user: data.data.user,
         accessToken: data.data.accessToken,
@@ -41,6 +42,7 @@ export default function RegisterPage() {
       toast.success("Registration successful!");
       router.push("/dashboard");
     } catch (error: any) {
+      console.log({ error });
       toast.error(error.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
