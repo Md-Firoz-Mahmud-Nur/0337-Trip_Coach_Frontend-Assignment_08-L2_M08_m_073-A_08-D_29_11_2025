@@ -26,7 +26,7 @@ export default function Home() {
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-              <Link href="/packages">
+              <Link href="/package">
                 <Button
                   size="lg"
                   className="gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg transition-shadow">
