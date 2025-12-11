@@ -2,6 +2,7 @@ export interface User {
   _id: string;
   name: string;
   email: string;
+  isGuideDocumentSubmit: boolean;
   role: "TOURIST" | "GUIDE" | "ADMIN";
   status: "ACTIVE" | "INACTIVE" | "BLOCKED" | "DELETED";
   isDeleted: boolean;

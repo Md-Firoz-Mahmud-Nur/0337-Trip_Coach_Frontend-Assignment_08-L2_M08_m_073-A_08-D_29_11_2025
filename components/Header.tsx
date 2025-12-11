@@ -53,6 +53,9 @@ export default function Header() {
       ? [
           { href: "/guide/packages", label: "My Packages" },
           { href: "/guide/profile", label: "Profile" },
+          ...(!user.isGuideDocumentSubmit
+            ? [{ href: "/be-guide", label: "Complete Guide Apply" }]
+            : []),
         ]
       : []),
     ...(user?.role === "ADMIN"
