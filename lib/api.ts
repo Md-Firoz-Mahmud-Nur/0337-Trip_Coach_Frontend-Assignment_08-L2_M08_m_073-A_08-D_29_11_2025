@@ -35,6 +35,8 @@ export const api = {
     }),
   logout: () => apiClient.post("/auth/logout", {}),
   getMe: () => apiClient.get("/user/me"),
+  resetPassword: (payload: { password: string; updatePassword: string }) =>
+    apiClient.post("/auth/reset-password", payload),
 
   getPackages: () => apiClient.get("/package/all"),
   getPackageById: (id: string) => apiClient.get(`/package/${id}`),

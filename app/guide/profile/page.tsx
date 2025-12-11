@@ -126,6 +126,7 @@ export default function UserProfile() {
         </Card>
 
         {/* Security card with eye toggle */}
+
         <Card className="border border-red-200 bg-red-50/70">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-red-700">
