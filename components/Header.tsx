@@ -33,8 +33,14 @@ export default function Header() {
   const dashboardHref =
     user?.role === "ADMIN" ? "/admin/dashboard" : "/user/dashboard";
 
+  const links = [
+    { href: "/", label: "Home" },
+    { href: "/package", label: "Explore Tours" },
+    { href: "/be-guide", label: "Become a Guide" },
+  ];
+
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/70">
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur-md supports-backdrop-filter:bg-white/70">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
           <Image
@@ -50,14 +56,11 @@ export default function Header() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
-          {[
-            { href: "/", label: "Home" },
-            { href: "/package", label: "Package" },
-          ].map((item) => (
+          {links.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="relative text-sm font-medium text-slate-600 transition-colors hover:text-blue-600 after:absolute after:left-0 after:bottom-[-6px] after:h-[2px] after:w-0 after:bg-blue-600 after:transition-all hover:after:w-full">
+              className="relative text-sm font-medium text-slate-600 transition-colors hover:text-blue-600 after:absolute after:left-0 after:-bottom-1.5 after:h-0.5 after:w-0 after:bg-blue-600 after:transition-all hover:after:w-full">
               {item.label}
             </Link>
           ))}
@@ -125,12 +128,17 @@ export default function Header() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-40">
-                <DropdownMenuItem asChild>
+                {links.map((item) => (
+                  <DropdownMenuItem key={item.href} asChild>
+                    <Link href={item.href}>{item.label}</Link>
+                  </DropdownMenuItem>
+                ))}
+                {/* <DropdownMenuItem asChild>
                   <Link href="/">Home</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/package">Package</Link>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
                 {isAuthenticated && (
                   <DropdownMenuItem asChild>
                     <Link href={dashboardHref}>Dashboard</Link>
