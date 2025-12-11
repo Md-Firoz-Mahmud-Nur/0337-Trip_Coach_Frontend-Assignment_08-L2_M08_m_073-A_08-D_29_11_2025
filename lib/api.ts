@@ -64,7 +64,7 @@ export const api = {
   updateBookingStatus: (
     bookingId: string,
     data: { status: string; paymentStatus?: string },
-  ) => apiClient.patch(`/bookings/status/${bookingId}`, data),
+  ) => apiClient.patch(`/booking/admin/${bookingId}/status`, data),
 
   getUserBookings: () => apiClient.get("/booking/me"),
 
