@@ -36,11 +36,25 @@ export default function Header() {
   const links = [
     { href: "/", label: "Home" },
     { href: "/package", label: "Explore Tours" },
-    { href: "/be-guide", label: "Become a Guide" },
+    ...(!user ? [{ href: "/be-guide", label: "Become a Guide" }] : []),
+
     ...(user?.role === "TOURIST"
       ? [
+          { href: "/be-guide", label: "Become a Guide" },
           { href: "/user/bookings", label: "My Bookings" },
           { href: "/user/profile", label: "Profile" },
+        ]
+      : []),
+    ...(user?.role === "GUIDE"
+      ? [
+          { href: "/guide/packages", label: "My Packages" },
+          { href: "/guide/profile", label: "Profile" },
+        ]
+      : []),
+    ...(user?.role === "ADMIN"
+      ? [
+          { href: "/admin/listings", label: "Listings" },
+          { href: "/admin/profile", label: "Profile" },
         ]
       : []),
   ];
@@ -141,12 +155,6 @@ export default function Header() {
                     <Link href={item.href}>{item.label}</Link>
                   </DropdownMenuItem>
                 ))}
-                {/* <DropdownMenuItem asChild>
-                  <Link href="/">Home</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/package">Package</Link>
-                </DropdownMenuItem> */}
                 {isAuthenticated && (
                   <DropdownMenuItem asChild>
                     <Link href={dashboardHref}>Dashboard</Link>

@@ -53,7 +53,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-theme(space.16))] bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center px-4 py-10">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-6 flex items-center justify-center">
           <div className="flex flex-col items-center text-center">

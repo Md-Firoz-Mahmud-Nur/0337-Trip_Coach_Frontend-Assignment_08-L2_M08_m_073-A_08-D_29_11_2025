@@ -30,28 +30,29 @@ export const loginUser = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || "Login failed");
     }
-  }
+  },
 );
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (
-    payload: { name: string; email: string; password: string },
-    { rejectWithValue }
+    payload: { name: string; email: string; password: string; role: string },
+    { rejectWithValue },
   ) => {
     try {
       const response = await api.register(
         payload.name,
         payload.email,
-        payload.password
+        payload.password,
+        payload.role,
       );
       return response.data.data || response.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Registration failed"
+        error.response?.data?.message || "Registration failed",
       );
     }
-  }
+  },
 );
 
 export const loadUserFromCookie = createAsyncThunk(
@@ -62,10 +63,10 @@ export const loadUserFromCookie = createAsyncThunk(
       return response.data.data || response.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to load auth"
+        error.response?.data?.message || "Failed to load auth",
       );
     }
-  }
+  },
 );
 
 export const logoutUser = createAsyncThunk(
@@ -77,7 +78,7 @@ export const logoutUser = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || "Logout failed");
     }
-  }
+  },
 );
 
 const authSlice = createSlice({
