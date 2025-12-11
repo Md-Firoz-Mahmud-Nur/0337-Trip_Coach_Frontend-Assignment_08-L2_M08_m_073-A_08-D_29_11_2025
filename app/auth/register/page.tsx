@@ -135,10 +135,6 @@ export default function RegisterPage() {
                   className="gap-3 rounded-2xl bg-blue-100 p-2"
                   required
                 >
-                  {/* <p className="mb-1.5 px-2 text-sm font-medium text-slate-800">
-                    I want to use{" "}
-                    <span className="text-blue-600">Trip Coach</span> as
-                  </p> */}
                   <div className="flex flex-1 items-center rounded-md border border-slate-200 bg-white px-3 py-2 hover:border-blue-300">
                     <RadioGroupItem id="role-tourist" value="TOURIST" />
                     <Label

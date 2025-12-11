@@ -31,7 +31,11 @@ export default function Header() {
   };
 
   const dashboardHref =
-    user?.role === "ADMIN" ? "/admin/dashboard" : "/user/dashboard";
+    user?.role === "ADMIN"
+      ? "/admin/dashboard"
+      : user?.role === "GUIDE"
+        ? "/guide/dashboard"
+        : "/tourist/dashboard";
 
   const links = [
     { href: "/", label: "Home" },

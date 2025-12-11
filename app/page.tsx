@@ -129,7 +129,7 @@ export default function Home() {
                   {feature.title}
                 </h3>
                 <p className="text-sm text-slate-600">{feature.description}</p>
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-blue-500/0 via-blue-500/40 to-blue-500/0 opacity-0 transition group-hover:opacity-100" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 bg-linear-to-r from-blue-500/0 via-blue-500/40 to-blue-500/0 opacity-0 transition group-hover:opacity-100" />
               </div>
             ))}
           </div>

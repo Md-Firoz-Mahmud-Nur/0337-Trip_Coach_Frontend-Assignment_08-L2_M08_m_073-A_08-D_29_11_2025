@@ -23,7 +23,7 @@ export default function LoginPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { isLoading, error, isAuthenticated, user } = useAppSelector(
-    (state) => state.auth
+    (state) => state.auth,
   );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,7 +32,7 @@ export default function LoginPage() {
   useEffect(() => {
     if (isAuthenticated && user) {
       router.push(
-        user.role === "ADMIN" ? "/admin/dashboard" : "/user/dashboard"
+        user.role === "ADMIN" ? "/admin/dashboard" : "/user/dashboard",
       );
     }
   }, [isAuthenticated, user, router]);
@@ -43,17 +43,19 @@ export default function LoginPage() {
     const result = await dispatch(loginUser({ email, password }));
 
     if (result.meta.requestStatus === "fulfilled") {
-      const loginedUser = result.payload as any;
-      if (loginedUser?.role === "ADMIN") {
+      const loggedInUser = result.payload as any;
+      if (loggedInUser?.role === "ADMIN") {
         router.push("/admin/dashboard");
+      } else if (loggedInUser?.role === "GUIDE") {
+        router.push("/guide/dashboard");
       } else {
-        router.push("/user/dashboard");
+        router.push("/tourist/dashboard");
       }
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center px-4 py-10">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-b from-slate-50 to-slate-100 px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-6 flex items-center justify-center">
           <div className="flex flex-col items-center text-center">
@@ -64,7 +66,7 @@ export default function LoginPage() {
               height={80}
               className="size-20"
             />
-            <p className="text-sm font-semibold text-slate-900 leading-tight">
+            <p className="text-sm leading-tight font-semibold text-slate-900">
               Trip <span className="text-blue-600">Coach</span>
             </p>
             <p className="text-xs text-slate-500">
@@ -73,7 +75,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <Card className="shadow-sm border-slate-200">
+        <Card className="border-slate-200 shadow-sm">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-semibold">
               Welcome back
@@ -94,7 +96,8 @@ export default function LoginPage() {
               <div>
                 <label
                   htmlFor="email"
-                  className="mb-1.5 block text-sm font-medium text-slate-800">
+                  className="mb-1.5 block text-sm font-medium text-slate-800"
+                >
                   Email
                 </label>
                 <Input
@@ -112,7 +115,8 @@ export default function LoginPage() {
               <div className="relative">
                 <label
                   htmlFor="password"
-                  className="mb-1.5 block text-sm font-medium text-slate-800">
+                  className="mb-1.5 block text-sm font-medium text-slate-800"
+                >
                   Password
                 </label>
                 <div className="relative">
@@ -130,8 +134,9 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 my-auto right-3 flex items-center text-slate-400 hover:text-slate-600"
-                    tabIndex={-1}>
+                    className="absolute inset-y-0 right-3 my-auto flex items-center text-slate-400 hover:text-slate-600"
+                    tabIndex={-1}
+                  >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
@@ -140,7 +145,8 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 className="w-full bg-blue-600 hover:bg-blue-700"
-                disabled={isLoading}>
+                disabled={isLoading}
+              >
                 {isLoading ? (
                   <>
                     <Loader2 size={16} className="mr-2 animate-spin" />
@@ -156,13 +162,15 @@ export default function LoginPage() {
               By continuing, you agree to our{" "}
               <Link
                 href="/terms"
-                className="font-medium text-blue-600 hover:underline">
+                className="font-medium text-blue-600 hover:underline"
+              >
                 Terms
               </Link>{" "}
               and{" "}
               <Link
                 href="/privacy"
-                className="font-medium text-blue-600 hover:underline">
+                className="font-medium text-blue-600 hover:underline"
+              >
                 Privacy Policy
               </Link>
               .
@@ -172,7 +180,8 @@ export default function LoginPage() {
               Don&apos;t have an account?{" "}
               <Link
                 href="/auth/register"
-                className="font-medium text-blue-600 hover:underline">
+                className="font-medium text-blue-600 hover:underline"
+              >
                 Sign up
               </Link>
             </div>

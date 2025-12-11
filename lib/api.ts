@@ -59,13 +59,13 @@ export const api = {
     data: { status: string; paymentStatus?: string },
   ) => apiClient.patch(`/bookings/status/${bookingId}`, data),
 
-  getUserBookings: () => apiClient.get("/bookings/me"),
+  getUserBookings: () => apiClient.get("/booking/me"),
 
   createBooking: (data: { package: string; pax: number }) =>
     apiClient.post("/bookings/create", data),
 
   cancelBooking: (bookingId: string) =>
-    apiClient.patch(`/bookings/me/${bookingId}/cancel`, {}),
+    apiClient.patch(`/booking/me/${bookingId}/cancel`, {}),
 
   getUserProfile: () => apiClient.get("/profile"),
   updateUserProfile: (data: object) => apiClient.patch("/profile", data),

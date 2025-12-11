@@ -16,10 +16,9 @@ export default function UserSidebar() {
 
   return (
     <aside className="hidden w-64 flex-col border-r border-slate-200 bg-slate-50/90 md:flex">
-      {/* Top badge, same style as Admin */}
       <div className="flex h-16 items-center border-b border-slate-200 px-4">
         <div className="rounded-full bg-blue-600/10 px-2.5 py-1 text-xs font-semibold tracking-wide text-blue-700 uppercase">
-          User
+          Tourist
         </div>
       </div>
 
