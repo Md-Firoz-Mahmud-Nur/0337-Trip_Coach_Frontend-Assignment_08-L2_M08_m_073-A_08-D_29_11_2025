@@ -26,6 +26,7 @@ apiClient.interceptors.response.use(
 export const api = {
   login: (email: string, password: string) =>
     apiClient.post("/auth/login", { email, password }),
+
   register: (name: string, email: string, password: string, role: string) =>
     apiClient.post("/user/register", {
       name,
@@ -33,18 +34,25 @@ export const api = {
       password,
       role,
     }),
+
   logout: () => apiClient.post("/auth/logout", {}),
+
   getMe: () => apiClient.get("/user/me"),
+
   resetPassword: (payload: { password: string; updatePassword: string }) =>
     apiClient.post("/auth/reset-password", payload),
 
   getPackages: () => apiClient.get("/package/all"),
+
   getPackageById: (id: string) => apiClient.get(`/package/${id}`),
 
   getUsers: () => apiClient.get("/user/all-users"),
+
   updateUserRole: (userId: string, role: "TOURIST" | "GUIDE" | "ADMIN") =>
     apiClient.patch(`/user/${userId}`, { role }),
+
   deleteUser: (userId: string) => apiClient.delete(`/user/${userId}`),
+
   updateUserStatus: (
     userId: string,
     status: "ACTIVE" | "INACTIVE" | "BLOCKED" | "DELETED",
@@ -54,13 +62,24 @@ export const api = {
     apiClient.patch(`/user/${userId}`, { isVerified }),
 
   createPackage: (data: object) => apiClient.post("/package/create", data),
+
   updatePackage: (packageId: string, data: object) =>
     apiClient.patch(`/packages/${packageId}`, data),
+
   deletePackage: (packageId: string) =>
     apiClient.delete(`/packages/${packageId}`),
+
+  createPackageType: (data: object) => apiClient.post("/package/types", data),
+
   getPackageTypes: () => apiClient.get("/package/types"),
 
+  updatePackageType: (id: string, data: object) =>
+    apiClient.patch(`/package/types/${id}`, data),
+
+  deletePackageType: (id: string) => apiClient.delete(`/package/types/${id}`),
+
   getBookings: () => apiClient.get("/booking"),
+
   getBookingDetails: (bookingId: string) =>
     apiClient.get(`/booking/admin/${bookingId}`),
 
@@ -81,10 +100,13 @@ export const api = {
     apiClient.patch(`/booking/me/${bookingId}/cancel`, {}),
 
   getUserProfile: () => apiClient.get("/profile"),
+
   updateUserProfile: (data: object) => apiClient.patch("/profile", data),
+
   updateUserPassword: (data: object) => apiClient.patch("/password", data),
 
   getPayments: () => apiClient.get("/booking"),
+
   getPaymentDetails: (paymentId: string) =>
     apiClient.get(`/payment/admin/${paymentId}`),
 

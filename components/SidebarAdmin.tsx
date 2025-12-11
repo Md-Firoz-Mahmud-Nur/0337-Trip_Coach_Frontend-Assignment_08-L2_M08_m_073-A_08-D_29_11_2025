@@ -14,6 +14,7 @@ import { usePathname } from "next/navigation";
 const adminNav = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/users", label: "Users", icon: Users },
+  { href: "/admin/package-types", label: "Package Types", icon: Package },
   { href: "/admin/packages", label: "Packages", icon: Package },
   { href: "/admin/bookings", label: "Bookings", icon: Bookmark },
   { href: "/admin/payments", label: "Payments", icon: CreditCard },
