@@ -29,7 +29,8 @@ import {
   fetchBookingsStart,
   fetchUserBookingsSuccess,
 } from "@/redux/slices/bookingsSlice";
-import { AlertCircle, Loader2, Trash2 } from "lucide-react";
+import { AlertCircle, CreditCard, Loader2, Trash2 } from "lucide-react";
+
 import { useEffect } from "react";
 
 export default function UserBookings() {
@@ -67,6 +68,23 @@ export default function UserBookings() {
       console.log("Booking cancelled:", bookingId);
     } catch (err) {
       console.error("Failed to cancel booking:", err);
+    }
+  };
+
+  const handlePayBooking = async (bookingId: string) => {
+    try {
+      const paymentRes = await api.initStripeCheckout({ bookingId });
+      const data = paymentRes.data.data || paymentRes.data;
+      const url = data.url;
+
+      if (!url) {
+        throw new Error("Stripe checkout URL missing");
+      }
+
+      window.location.href = url;
+    } catch (err) {
+      console.error("Failed to start payment:", err);
+      alert("Unable to start payment. Please try again.");
     }
   };
 
@@ -146,43 +164,56 @@ export default function UserBookings() {
                         {new Date(booking.createdAt).toLocaleDateString()}
                       </TableCell>
                       <TableCell className="text-right">
-                        {booking.status !== "CANCELLED" && (
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button
-                                variant="destructive"
-                                size="sm"
-                                className="gap-1"
-                              >
-                                <Trash2 size={14} />
-                                Cancel
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                  Cancel Booking
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Are you sure you want to cancel this booking?
-                                  This action cannot be undone.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <div className="flex gap-3">
-                                <AlertDialogCancel>
-                                  Keep Booking
-                                </AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() =>
-                                    handleCancelBooking(booking._id)
-                                  }
+                        <div className="flex justify-end gap-2">
+                          {booking.status === "PENDING" && (
+                            <Button
+                              size="sm"
+                              className="gap-1 bg-emerald-600 text-white hover:bg-emerald-700"
+                              onClick={() => handlePayBooking(booking._id)}
+                            >
+                              <CreditCard size={14} />
+                              Pay
+                            </Button>
+                          )}
+
+                          {booking.status !== "CANCELLED" && (
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  variant="destructive"
+                                  size="sm"
+                                  className="gap-1"
                                 >
-                                  Cancel Booking
-                                </AlertDialogAction>
-                              </div>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        )}
+                                  <Trash2 size={14} />
+                                  Cancel
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>
+                                    Cancel Booking
+                                  </AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Are you sure you want to cancel this
+                                    booking? This action cannot be undone.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <div className="flex gap-3">
+                                  <AlertDialogCancel>
+                                    Keep Booking
+                                  </AlertDialogCancel>
+                                  <AlertDialogAction
+                                    onClick={() =>
+                                      handleCancelBooking(booking._id)
+                                    }
+                                  >
+                                    Cancel Booking
+                                  </AlertDialogAction>
+                                </div>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          )}
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
