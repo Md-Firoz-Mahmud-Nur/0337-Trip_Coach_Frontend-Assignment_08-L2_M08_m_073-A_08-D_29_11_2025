@@ -31,7 +31,7 @@ export default function PackageDetailPage() {
   const router = useRouter();
 
   const { selectedPackage, isLoading, error } = useAppSelector(
-    (state) => state.packages
+    (state) => state.packages,
   );
   const [localPackage, setLocalPackage] = useState<Package | null>(null);
 
@@ -61,7 +61,7 @@ export default function PackageDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <Loader2 className="animate-spin text-blue-600" size={32} />
       </div>
     );
@@ -88,6 +88,8 @@ export default function PackageDetailPage() {
   const handleBookNow = async () => {
     if (!pkg?._id) return;
 
+    console.log(pkg);
+
     try {
       setIsBooking(true);
       setBookingError(null);
@@ -95,19 +97,14 @@ export default function PackageDetailPage() {
       const bookingRes = await api.createBooking({
         package: pkg._id,
         pax: pax || 1,
+        totalAmount: pkg.costFrom,
       });
-      const booking = bookingRes.data.data || bookingRes.data;
-      const bookingId = booking._id;
 
-      const paymentRes = await api.initStripeCheckout({ bookingId });
-      const data = paymentRes.data.data || paymentRes.data;
-      const url = data.url;
+      console.log(bookingRes);
 
-      if (!url) {
-        throw new Error("Stripe checkout URL missing");
+      if (bookingRes.status === 201) {
+        router.push(`/tourist/bookings`);
       }
-
-      window.location.href = url;
     } catch (err: any) {
       const msg =
         err?.response?.data?.message ||
@@ -122,7 +119,7 @@ export default function PackageDetailPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 py-12">
-      <div className="container mx-auto px-4 max-w-5xl">
+      <div className="container mx-auto max-w-5xl px-4">
         <div className="overflow-hidden rounded-2xl bg-slate-200">
           <div className="relative aspect-video">
             <Image
@@ -153,7 +150,7 @@ export default function PackageDetailPage() {
 
         {/* Title + summary */}
         <div className="mt-8">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
             {pkg.title}
           </h1>
           <p className="mt-3 text-lg text-slate-600">{pkg.summary}</p>
@@ -167,7 +164,7 @@ export default function PackageDetailPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
-                <div className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                <div className="text-xs font-medium tracking-wide text-slate-500 uppercase">
                   Price from
                 </div>
                 <div className="mt-1 text-3xl font-bold text-blue-600">
@@ -223,11 +220,12 @@ export default function PackageDetailPage() {
                   size="lg"
                   className="w-full bg-blue-600 hover:bg-blue-700"
                   onClick={handleBookNow}
-                  disabled={isBooking}>
+                  disabled={isBooking}
+                >
                   {isBooking ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Redirecting to payment...
+                      Loading ...
                     </>
                   ) : (
                     "Book now"
@@ -236,12 +234,13 @@ export default function PackageDetailPage() {
                 <Button
                   variant="outline"
                   className="w-full"
-                  onClick={() => router.push("/contact")}>
+                  onClick={() => router.push("/contact")}
+                >
                   Contact us
                 </Button>
               </div>
 
-              <div className="mt-3 border-t border-slate-200 pt-3 text-xs text-slate-500 space-y-1">
+              <div className="mt-3 space-y-1 border-t border-slate-200 pt-3 text-xs text-slate-500">
                 <div className="flex justify-between">
                   <span>Age range</span>
                   <span className="font-medium">
@@ -336,7 +335,8 @@ export default function PackageDetailPage() {
                   {pkg.amenities.map((amenity, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1">
+                      className="flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1"
+                    >
                       <CheckCircle
                         size={14}
                         className="shrink-0 text-blue-500"

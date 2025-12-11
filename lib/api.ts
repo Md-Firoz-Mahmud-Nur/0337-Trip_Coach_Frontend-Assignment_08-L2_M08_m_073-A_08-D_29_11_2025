@@ -68,8 +68,11 @@ export const api = {
 
   getUserBookings: () => apiClient.get("/booking/me"),
 
-  createBooking: (data: { package: string; pax: number }) =>
-    apiClient.post("/bookings/create", data),
+  createBooking: (data: {
+    package: string;
+    pax: number;
+    totalAmount: number;
+  }) => apiClient.post("/booking/create", data),
 
   cancelBooking: (bookingId: string) =>
     apiClient.patch(`/booking/me/${bookingId}/cancel`, {}),
