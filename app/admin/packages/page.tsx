@@ -61,6 +61,10 @@ type PackageFormState = {
   itinerary: string;
   packageType: string;
   images: string;
+  availableSeats?: number;
+  isActive?: boolean;
+  meetingPoint?: string;
+  guide?: string;
 };
 
 type PackageTypeOption = {
@@ -74,7 +78,7 @@ const emptyForm: PackageFormState = {
   description: "",
   destination: "",
   costFrom: "",
-  currency: "USD",
+  currency: "BDT",
   durationDays: "",
   capacity: "",
   startDate: "",
@@ -90,6 +94,10 @@ const emptyForm: PackageFormState = {
   itinerary: "",
   packageType: "",
   images: "",
+  availableSeats: 0,
+  isActive: true,
+  meetingPoint: "",
+  guide: "",
 };
 
 export default function AdminPackages() {
@@ -127,8 +135,8 @@ export default function AdminPackages() {
       } catch (err) {
         dispatch(
           fetchPackagesError(
-            err instanceof Error ? err.message : "Failed to fetch packages"
-          )
+            err instanceof Error ? err.message : "Failed to fetch packages",
+          ),
         );
       }
     };
@@ -217,7 +225,7 @@ export default function AdminPackages() {
       description: pkg.description || "",
       destination: pkg.destination || "",
       costFrom: pkg.costFrom?.toString() ?? "",
-      currency: pkg.currency || "USD",
+      currency: pkg.currency || "BDT",
       durationDays: pkg.durationDays?.toString() ?? "",
       capacity: pkg.capacity?.toString() ?? "",
       startDate: pkg.startDate ? pkg.startDate.slice(0, 10) : "",
@@ -243,11 +251,11 @@ export default function AdminPackages() {
     filterType === "all"
       ? packages
       : packages.filter(
-          (pkg) => (pkg as any).packageType?.toString() === filterType
+          (pkg) => (pkg as any).packageType?.toString() === filterType,
         );
 
   return (
-    <div className="p-6 space-y-6 ">
+    <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-slate-900">
@@ -266,9 +274,10 @@ export default function AdminPackages() {
               setEditingId(null);
               setFormData(emptyForm);
             }
-          }}>
+          }}
+        >
           <DialogTrigger asChild>
-            <Button className="gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
+            <Button className="gap-2 bg-blue-600 text-white shadow-sm hover:bg-blue-700">
               <Plus size={18} />
               Add Package
             </Button>
@@ -588,7 +597,8 @@ export default function AdminPackages() {
                       ...formData,
                       packageType: value,
                     })
-                  }>
+                  }
+                >
                   <SelectTrigger className="mt-1">
                     <SelectValue placeholder="Select package type" />
                   </SelectTrigger>
@@ -604,7 +614,8 @@ export default function AdminPackages() {
 
               <Button
                 onClick={handleSave}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                className="w-full bg-blue-600 text-white hover:bg-blue-700"
+              >
                 {editingId ? "Update" : "Create"} Package
               </Button>
             </div>
@@ -613,12 +624,12 @@ export default function AdminPackages() {
       </div>
 
       {error && (
-        <div className="p-4 rounded-lg border border-red-200 bg-red-50 text-red-700 text-sm">
+        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
           {error}
         </div>
       )}
 
-      <Card className="border border-blue-100 shadow-sm bg-white/90">
+      <Card className="border border-blue-100 bg-white/90 shadow-sm">
         <CardHeader className="flex items-center justify-between gap-4 border-b border-slate-100">
           <CardTitle className="text-lg font-semibold text-slate-900">
             All Packages
@@ -648,7 +659,7 @@ export default function AdminPackages() {
               <Loader2 className="animate-spin text-blue-500" size={32} />
             </div>
           ) : shownPackages.length === 0 ? (
-            <p className="text-slate-500 text-center py-8">No packages found</p>
+            <p className="py-8 text-center text-slate-500">No packages found</p>
           ) : (
             <div className="overflow-x-auto">
               <Table>
@@ -682,12 +693,13 @@ export default function AdminPackages() {
                       <TableCell className="text-slate-700">
                         {pkg.durationDays} days
                       </TableCell>
-                      <TableCell className="text-right space-x-2">
+                      <TableCell className="space-x-2 text-right">
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => handleEdit(pkg)}
-                          className="gap-1 border-blue-200 text-blue-700 hover:bg-blue-50 hover:text-blue-800">
+                          className="gap-1 border-blue-200 text-blue-700 hover:bg-blue-50 hover:text-blue-800"
+                        >
                           <Edit2 size={14} />
                           Edit
                         </Button>
@@ -695,7 +707,8 @@ export default function AdminPackages() {
                           variant="destructive"
                           size="sm"
                           onClick={() => handleDelete(pkg._id)}
-                          className="gap-1">
+                          className="gap-1"
+                        >
                           <Trash2 size={14} />
                           Delete
                         </Button>

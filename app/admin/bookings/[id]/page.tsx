@@ -37,7 +37,7 @@ function BookingDetailsPageInner() {
         setError(
           err?.response?.data?.message ||
             err.message ||
-            "Failed to fetch booking details"
+            "Failed to fetch booking details",
         );
       } finally {
         setIsLoading(false);
@@ -51,7 +51,7 @@ function BookingDetailsPageInner() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="flex min-h-screen items-center justify-center bg-slate-50">
         <Loader2 className="animate-spin text-blue-600" size={32} />
       </div>
     );
@@ -60,11 +60,12 @@ function BookingDetailsPageInner() {
   if (error) {
     return (
       <div className="min-h-screen bg-slate-50">
-        <div className="mx-auto max-w-5xl p-6 space-y-4">
+        <div className="mx-auto max-w-5xl space-y-4 p-6">
           <Button
             variant="ghost"
             onClick={() => router.back()}
-            className="mb-2 gap-2">
+            className="mb-2 gap-2"
+          >
             <ArrowLeft className="h-4 w-4" />
             Back
           </Button>
@@ -84,7 +85,8 @@ function BookingDetailsPageInner() {
           <Button
             variant="ghost"
             onClick={() => router.back()}
-            className="mb-4 gap-2">
+            className="mb-4 gap-2"
+          >
             <ArrowLeft className="h-4 w-4" />
             Back
           </Button>
@@ -125,21 +127,22 @@ function BookingDetailsPageInner() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="mx-auto max-w-6xl p-6 space-y-6">
+      <div className="mx-auto max-w-6xl space-y-6 p-6">
         <div className="flex items-center justify-between gap-3">
           <Button
             variant="ghost"
             onClick={() => router.back()}
-            className="gap-2">
+            className="gap-2"
+          >
             <ArrowLeft className="h-4 w-4" />
             Back to bookings
           </Button>
-          <p className="text-xs text-slate-500 font-mono">ID: {booking._id}</p>
+          <p className="font-mono text-xs text-slate-500">ID: {booking._id}</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
           {/* Left column: package + details */}
-          <div className="md:col-span-2 space-y-6">
+          <div className="space-y-6 md:col-span-2">
             <Card className="border-slate-200">
               <CardHeader className="space-y-2">
                 <CardTitle className="text-2xl font-semibold">
@@ -148,12 +151,14 @@ function BookingDetailsPageInner() {
                 <div className="flex flex-wrap gap-2 text-xs">
                   <Badge
                     className={getStatusColor(booking.status)}
-                    variant="outline">
+                    variant="outline"
+                  >
                     Booking: {booking.status}
                   </Badge>
                   <Badge
                     className={getPaymentStatusColor(booking.paymentStatus)}
-                    variant="outline">
+                    variant="outline"
+                  >
                     Payment: {booking.paymentStatus}
                   </Badge>
                 </div>
@@ -207,7 +212,7 @@ function BookingDetailsPageInner() {
               <CardContent className="grid gap-4 text-sm md:grid-cols-2">
                 <div>
                   <p className="text-xs text-slate-500">Booking ID</p>
-                  <p className="font-mono text-xs mt-1">{booking._id}</p>
+                  <p className="mt-1 font-mono text-xs">{booking._id}</p>
                 </div>
                 <div>
                   <p className="text-xs text-slate-500">Booking date</p>
@@ -250,7 +255,7 @@ function BookingDetailsPageInner() {
                             </div>
                             <p className="text-sm text-slate-700">{day}</p>
                           </li>
-                        )
+                        ),
                       )}
                     </ol>
                   </CardContent>
@@ -274,7 +279,7 @@ function BookingDetailsPageInner() {
                               <span className="mt-0.5 text-emerald-600">✓</span>
                               <span>{item}</span>
                             </li>
-                          )
+                          ),
                         )}
                       </ul>
                     </CardContent>
@@ -297,7 +302,7 @@ function BookingDetailsPageInner() {
                               <span className="mt-0.5 text-red-500">✗</span>
                               <span>{item}</span>
                             </li>
-                          )
+                          ),
                         )}
                       </ul>
                     </CardContent>
@@ -317,7 +322,8 @@ function BookingDetailsPageInner() {
                   <p className="mb-1 text-xs text-slate-500">Booking status</p>
                   <Badge
                     className={getStatusColor(booking.status)}
-                    variant="outline">
+                    variant="outline"
+                  >
                     {booking.status}
                   </Badge>
                 </div>
@@ -325,7 +331,8 @@ function BookingDetailsPageInner() {
                   <p className="mb-1 text-xs text-slate-500">Payment status</p>
                   <Badge
                     className={getPaymentStatusColor(booking.paymentStatus)}
-                    variant="outline">
+                    variant="outline"
+                  >
                     {booking.paymentStatus}
                   </Badge>
                 </div>
@@ -341,7 +348,7 @@ function BookingDetailsPageInner() {
                   <span className="text-slate-500">Base price</span>
                   <span className="font-medium">
                     {booking.package?.costFrom}{" "}
-                    {booking.package?.currency || "USD"}
+                    {booking.package?.currency || "BDT"}
                   </span>
                 </div>
                 <div className="flex justify-between border-b border-slate-200 pb-2">
@@ -353,7 +360,7 @@ function BookingDetailsPageInner() {
                     Total amount
                   </span>
                   <span className="text-lg font-bold text-blue-600">
-                    {booking.totalAmount} {booking.currency || "USD"}
+                    {booking.totalAmount} {booking.currency || "BDT"}
                   </span>
                 </div>
               </CardContent>
@@ -362,7 +369,7 @@ function BookingDetailsPageInner() {
             <div className="space-y-2">
               {booking.paymentStatus === "UNPAID" && (
                 <Link href={`/packages/${booking.package?.slug}`}>
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 mb-2">
+                  <Button className="mb-2 w-full bg-blue-600 hover:bg-blue-700">
                     Complete payment
                   </Button>
                 </Link>

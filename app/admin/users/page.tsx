@@ -4,21 +4,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Table,
   TableBody,
   TableCell,
@@ -35,7 +20,7 @@ import {
   updateUserStatusSuccess,
   updateUserSuccess,
 } from "@/redux/slices/usersSlice";
-import { AlertCircle, Edit2, Loader2, Lock, LockOpen } from "lucide-react";
+import { AlertCircle, Loader2, Lock, LockOpen } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type UserStatus = "ACTIVE" | "INACTIVE" | "BLOCKED" | "DELETED";
@@ -57,7 +42,6 @@ export default function AdminUsers() {
       try {
         const response = await api.getUsers();
         dispatch(fetchUsersSuccess(response.data.data || response.data));
-        console.log("Users loaded:", response.data.data || response.data);
       } catch (err: any) {
         const errorMessage =
           err.response?.data?.message || err.message || "Failed to fetch users";
@@ -95,6 +79,17 @@ export default function AdminUsers() {
     }
   };
 
+  const handleUpdateVerify = async (userId: string, isVerified: boolean) => {
+    try {
+      const response = await api.updateUserVerify(userId, isVerified);
+      const updatedUser = response.data.data || response.data;
+      dispatch(updateUserStatusSuccess(updatedUser));
+      console.log("User status updated:", userId, "->");
+    } catch (err) {
+      console.error("Failed to update user status:", err);
+    }
+  };
+
   const getStatusBadgeClass = (status: UserStatus) => {
     switch (status) {
       case "ACTIVE":
@@ -107,6 +102,15 @@ export default function AdminUsers() {
         return "bg-slate-100 text-slate-800";
       default:
         return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getVerifiedBadgeClass = (isVerified: boolean) => {
+    switch (isVerified) {
+      case true:
+        return "bg-green-100 text-green-800";
+      default:
+        return "bg-red-100 text-gray-800";
     }
   };
 
@@ -151,11 +155,12 @@ export default function AdminUsers() {
                     <TableHead>Email</TableHead>
                     <TableHead>Role</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead>Verify</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {users.map((user) => (
+                  {users.filter((user) => user.role !== "ADMIN").map((user) => (
                     <TableRow key={user._id}>
                       <TableCell className="font-medium">{user.name}</TableCell>
                       <TableCell>{user.email}</TableCell>
@@ -179,58 +184,41 @@ export default function AdminUsers() {
                           {user.status}
                         </span>
                       </TableCell>
-                      <TableCell className="space-x-2 text-right">
-                        <Dialog
-                          open={isDialogOpen && selectedUser?._id === user._id}
-                          onOpenChange={setIsDialogOpen}
+                      <TableCell>
+                        <span
+                          className={`rounded px-2 py-1 text-sm font-medium ${getVerifiedBadgeClass(
+                            user.isVerified,
+                          )}`}
                         >
-                          <DialogTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => {
-                                setSelectedUser(user);
-                                setNewRole(user.role);
-                              }}
-                              className="gap-1"
-                            >
-                              <Edit2 size={14} />
-                              Edit Role
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Edit User Role</DialogTitle>
-                              <DialogDescription>
-                                Change the role for {user.name}
-                              </DialogDescription>
-                            </DialogHeader>
-                            <div className="space-y-4">
-                              <Select
-                                value={newRole}
-                                onValueChange={(value) =>
-                                  setNewRole(
-                                    value as "TOURIST" | "GUIDE" | "ADMIN",
-                                  )
-                                }
-                              >
-                                <SelectTrigger>
-                                  <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="USER">User</SelectItem>
-                                  <SelectItem value="ADMIN">Admin</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              <Button
-                                onClick={handleUpdateRole}
-                                className="w-full"
-                              >
-                                Save Changes
-                              </Button>
-                            </div>
-                          </DialogContent>
-                        </Dialog>
+                          {user.isVerified ? "True" : "False"}
+                        </span>
+                      </TableCell>
+                      <TableCell className="space-x-2 text-right">
+                        {!user.isVerified ? (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              handleUpdateVerify(user._id, !user.isVerified)
+                            }
+                            className="gap-1 text-green-600 hover:text-green-700"
+                          >
+                            <LockOpen size={14} />
+                            Verify
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              handleUpdateVerify(user._id, !user.isVerified)
+                            }
+                            className="gap-1 text-red-600 hover:text-red-700"
+                          >
+                            <LockOpen size={14} />
+                            Disprove
+                          </Button>
+                        )}
                         {user.status === "BLOCKED" ? (
                           <Button
                             variant="outline"

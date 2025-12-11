@@ -26,7 +26,7 @@ import { useEffect } from "react";
 export default function AdminPayments() {
   const dispatch = useAppDispatch();
   const { payments, isLoading, error } = useAppSelector(
-    (state) => state.payments
+    (state) => state.payments,
   );
 
   useEffect(() => {
@@ -42,10 +42,6 @@ export default function AdminPayments() {
         dispatch(fetchPaymentsError(errorMessage));
       }
     };
-
-    if (payments.length === 0 && !isLoading) {
-      fetchPayments();
-    }
   }, [dispatch, payments.length, isLoading]);
 
   const getStatusColor = (status: string) => {
@@ -67,7 +63,7 @@ export default function AdminPayments() {
     <div className="min-h-screen bg-slate-50/20 p-6">
       <div className="mx-auto max-w-6xl space-y-6">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">
             Payments management
           </h1>
           <p className="text-sm text-slate-600">
@@ -127,7 +123,8 @@ export default function AdminPayments() {
                         <TableCell>
                           <Badge
                             className={getStatusColor(payment.status)}
-                            variant="outline">
+                            variant="outline"
+                          >
                             {payment.status}
                           </Badge>
                         </TableCell>
@@ -139,7 +136,8 @@ export default function AdminPayments() {
                             <Button
                               variant="outline"
                               size="sm"
-                              className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-colors">
+                              className="border-blue-200 text-blue-600 transition-colors hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
+                            >
                               <Eye className="mr-1.5 h-4 w-4" />
                               View
                             </Button>

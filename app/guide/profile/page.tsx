@@ -112,7 +112,7 @@ export default function UserProfile() {
                 Member Since
               </span>
               <span className="font-medium">
-                {user ? new Date(user._id).toLocaleDateString() : "N/A"}
+                {user ? new Date(user.createdAt).toLocaleDateString() : "N/A"}
               </span>
             </div>
             <Separator />

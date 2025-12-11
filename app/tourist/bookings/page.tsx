@@ -176,7 +176,9 @@ export default function UserBookings() {
                             </Button>
                           )}
 
-                          {booking.status !== "CANCELLED" && (
+                          {!["CANCELLED", "CONFIRMED"].includes(
+                            booking.status,
+                          ) && (
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
                                 <Button

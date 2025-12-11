@@ -6,6 +6,7 @@ export interface AdminUser {
   _id: string;
   email: string;
   name: string;
+  isVerified: boolean;
   role: "TOURIST" | "GUIDE" | "ADMIN";
   status: "ACTIVE" | "INACTIVE" | "BLOCKED" | "DELETED";
   createdAt: string;

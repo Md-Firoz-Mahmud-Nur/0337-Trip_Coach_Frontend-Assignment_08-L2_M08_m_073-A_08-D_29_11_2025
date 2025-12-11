@@ -149,7 +149,7 @@ export default function UserDashboard() {
             </p>
           </div>
           <Link href="/tourist/bookings">
-            <Button variant="outline" className="gap-2 bg-white">
+            <Button variant="outline" className="gap-2 bg-sky-50">
               <Bookmark size={16} />
               View all bookings
             </Button>

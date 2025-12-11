@@ -38,10 +38,10 @@ export default function PackagesPage() {
       <div className="container mx-auto px-4">
         <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-4xl font-bold tracking-tight text-slate-900 md:text-5xl">
               Travel packages
             </h1>
-            <p className="mt-2 max-w-xl text-base md:text-lg text-slate-600">
+            <p className="mt-2 max-w-xl text-base text-slate-600 md:text-lg">
               Handpicked trips with trusted guides, flexible dates, and
               transparent pricing for every kind of traveler.
             </p>
@@ -72,8 +72,8 @@ export default function PackagesPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-xl border border-dashed border-slate-200 bg-white py-16 text-center">
-            <p className="text-lg font-medium text-slate-700">
+          <div className="rounded-xl border border-dashed border-slate-200 bg-red-50 py-16 text-center">
+            <p className="text-lg font-medium text-red-600">
               No packages available right now.
             </p>
             <p className="mt-2 text-sm text-slate-500">

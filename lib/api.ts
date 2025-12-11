@@ -50,7 +50,10 @@ export const api = {
     status: "ACTIVE" | "INACTIVE" | "BLOCKED" | "DELETED",
   ) => apiClient.patch(`/user/${userId}`, { status }),
 
-  createPackage: (data: object) => apiClient.post("/packages/create", data),
+  updateUserVerify: (userId: string, isVerified: boolean) =>
+    apiClient.patch(`/user/${userId}`, { isVerified }),
+
+  createPackage: (data: object) => apiClient.post("/package/create", data),
   updatePackage: (packageId: string, data: object) =>
     apiClient.patch(`/packages/${packageId}`, data),
   deletePackage: (packageId: string) =>
@@ -81,7 +84,7 @@ export const api = {
   updateUserProfile: (data: object) => apiClient.patch("/profile", data),
   updateUserPassword: (data: object) => apiClient.patch("/password", data),
 
-  getPayments: () => apiClient.get("/payment"),
+  getPayments: () => apiClient.get("/booking"),
   getPaymentDetails: (paymentId: string) =>
     apiClient.get(`/payment/admin/${paymentId}`),
 

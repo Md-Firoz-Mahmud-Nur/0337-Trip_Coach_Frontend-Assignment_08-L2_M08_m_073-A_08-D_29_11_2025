@@ -98,4 +98,5 @@ export interface AdminUser {
   name: string;
   role: "TOURIST" | "GUIDE" | "ADMIN";
   createdAt: string;
+  isVerified: boolean;
 }

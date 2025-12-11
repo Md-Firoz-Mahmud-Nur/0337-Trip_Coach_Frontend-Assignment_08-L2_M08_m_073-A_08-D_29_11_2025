@@ -60,7 +60,7 @@ export default function Header() {
       : []),
     ...(user?.role === "ADMIN"
       ? [
-          { href: "/admin/listings", label: "Listings" },
+          { href: "/admin/packages", label: "Packages" },
           { href: "/admin/profile", label: "Profile" },
         ]
       : []),

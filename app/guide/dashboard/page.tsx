@@ -32,7 +32,6 @@ export default function UserDashboard() {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
 
-
   if (!user?.isGuideDocumentSubmit) {
     return (
       <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4">
@@ -173,12 +172,6 @@ export default function UserDashboard() {
               Track your trips, bookings, and discover new packages.
             </p>
           </div>
-          <Link href="/tourist/bookings">
-            <Button variant="outline" className="gap-2 bg-white">
-              <Bookmark size={16} />
-              View all bookings
-            </Button>
-          </Link>
         </div>
 
         {error && (

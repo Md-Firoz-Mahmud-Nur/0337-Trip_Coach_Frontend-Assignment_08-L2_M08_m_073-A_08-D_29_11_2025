@@ -38,28 +38,22 @@ export default function AdminDashboard() {
     setIsLoading(true);
     setError(null);
     try {
-      const [usersRes, packagesRes, bookingsRes, paymentsRes] =
-        await Promise.all([
-          api.getUsers(),
-          api.getPackages(),
-          api.getBookings(),
-          api.getPayments(),
-        ]);
+      const [usersRes, packagesRes, bookingsRes] = await Promise.all([
+        api.getUsers(),
+        api.getPackages(),
+        api.getBookings(),
+      ]);
 
-      const data = await api.getUsers();
-
-      console.log(data);
-      
       const users = usersRes.data?.data || [];
       const packages = packagesRes.data?.data || [];
       const bookings = bookingsRes.data?.data || [];
-      const payments = paymentsRes.data?.data || [];
+      const payments = bookingsRes.data?.data || [];
 
-      const totalRevenue = (payments ?? []).reduce(
-        (sum: number, p: any) =>
-          p.status === "UNPAID" ? sum + (p.amount || 0) : sum,
-        0
-      );
+      console.log({payments});
+
+      const totalRevenue = payments.reduce((sum: number, p: any) => {
+        return p.paymentStatus === "PAID" ? sum + (p.totalAmount || 0) : sum;
+      }, 0);
 
       setStats({
         totalUsers: Array.isArray(users) ? users.length : 0,
@@ -116,7 +110,7 @@ export default function AdminDashboard() {
       <div className="mx-auto max-w-6xl space-y-6">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">
               Admin dashboard
             </h1>
             <p className="text-sm text-slate-600">
@@ -127,7 +121,8 @@ export default function AdminDashboard() {
             onClick={fetchDashboardData}
             disabled={isLoading}
             variant="outline"
-            className="gap-2 bg-white">
+            className="gap-2 bg-white"
+          >
             <RefreshCw size={16} className={isLoading ? "animate-spin" : ""} />
             Refresh
           </Button>
@@ -150,19 +145,21 @@ export default function AdminDashboard() {
           {statCards.map((stat, idx) => (
             <Card
               key={idx}
-              className={cn("border-slate-200 shadow-sm", stat.bg)}>
+              className={cn("border-slate-200 shadow-sm", stat.bg)}
+            >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                <CardTitle className="text-xs font-medium tracking-wide text-slate-500 uppercase">
                   {stat.title}
                 </CardTitle>
                 <div
-                  className={`flex h-8 w-8 items-center justify-center rounded-full ${stat.bg}`}>
+                  className={`flex h-8 w-8 items-center justify-center rounded-full ${stat.bg}`}
+                >
                   <stat.icon className={cn("h-4 w-4", stat.color)} />
                 </div>
               </CardHeader>
               <CardContent>
                 {isLoading ? (
-                  <div className="h-7 w-24 rounded bg-slate-200 animate-pulse" />
+                  <div className="h-7 w-24 animate-pulse rounded bg-slate-200" />
                 ) : (
                   <div className="text-2xl font-semibold text-slate-900">
                     {stat.value}
