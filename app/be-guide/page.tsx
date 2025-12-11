@@ -52,14 +52,11 @@ const GuideApplicationPage = () => {
 
     try {
       setIsLoading(true);
-      // TODO: Replace with real API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       setSuccessMessage(
         "Application submitted successfully! Our team will contact you by email.",
       );
-      // Optionally reset some fields
-      // setFullName(""); setEmail(""); ...
     } catch (err) {
       setError(
         "Something went wrong while submitting your application. Please try again.",
@@ -73,7 +70,6 @@ const GuideApplicationPage = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-linear-to-b from-slate-50 to-slate-100 px-4 py-10">
       <div className="w-full max-w-2xl">
-        {/* Top logo / heading (same style as register) */}
         <div className="mb-6 flex items-center justify-center">
           <div className="flex flex-col items-center text-center">
             <Image
@@ -109,7 +105,6 @@ const GuideApplicationPage = () => {
           </CardHeader>
 
           <CardContent>
-            {/* Alerts */}
             {error && (
               <div className="mb-4 flex items-start gap-2 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-red-700">
                 <AlertCircle size={16} className="mt-0.5 shrink-0" />
