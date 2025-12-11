@@ -41,8 +41,8 @@ export default function Header() {
     ...(user?.role === "TOURIST"
       ? [
           { href: "/be-guide", label: "Become a Guide" },
-          { href: "/user/bookings", label: "My Bookings" },
-          { href: "/user/profile", label: "Profile" },
+          { href: "/tourist/bookings", label: "My Bookings" },
+          { href: "/tourist/profile", label: "Profile" },
         ]
       : []),
     ...(user?.role === "GUIDE"

@@ -6,6 +6,7 @@ import {
   Globe2,
   HelpCircle,
   MapPin,
+  Search,
   ShieldCheck,
   Star,
   Users,
@@ -23,22 +24,45 @@ export default function Home() {
               Your personal travel planner
             </span>
 
-            <h1 className="mt-6 text-4xl md:text-6xl font-bold tracking-tight text-slate-900 text-balance">
+            <h1 className="mt-6 text-4xl font-bold tracking-tight text-balance text-slate-900 md:text-6xl">
               Explore the world with{" "}
               <span className="text-blue-600">Trip Coach</span>
             </h1>
 
-            <p className="mt-4 md:mt-6 text-base md:text-xl text-slate-600 text-balance">
+            <p className="mt-4 text-base text-balance text-slate-600 md:mt-6 md:text-xl">
               Explore custom travel options that fit your preferences and price
               range. From seaside getaways to thrilling mountain journeys,
               discover your perfect vacation in no time.
             </p>
 
+            {/* HERO SEARCH BAR – ADDED */}
+            <div className="mt-6 flex flex-col items-center">
+              <div className="flex w-full max-w-xl items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 shadow-sm">
+                <Search className="text-slate-400" size={18} />
+                <input
+                  type="text"
+                  placeholder="Where are you going?"
+                  className="flex-1 border-none bg-transparent text-sm text-slate-800 placeholder:text-slate-400 focus:ring-0 focus:outline-none md:text-base"
+                />
+                <Button
+                  size="sm"
+                  className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
+                >
+                  Search
+                </Button>
+              </div>
+              <p className="mt-2 text-xs text-slate-400">
+                Try “Bangkok city tour”, “Bali beach getaway”, or “I want a food
+                trip”.
+              </p>
+            </div>
+
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link href="/package">
                 <Button
                   size="lg"
-                  className="gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg transition-shadow">
+                  className="gap-2 bg-blue-600 text-white shadow-md transition-shadow hover:bg-blue-700 hover:shadow-lg"
+                >
                   <Compass size={20} />
                   Explore packages
                 </Button>
@@ -48,7 +72,8 @@ export default function Home() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="gap-2 border-blue-200 text-blue-700 hover:bg-blue-50">
+                  className="gap-2 border-blue-200 text-blue-700 hover:bg-blue-50"
+                >
                   Learn more
                 </Button>
               </Link>
@@ -62,12 +87,12 @@ export default function Home() {
       </section>
 
       {/* 2. Why choose Trip Coach */}
-      <section className="py-16 md:py-24 bg-slate-50">
+      <section className="bg-slate-50 py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-slate-900">
+          <h2 className="text-center text-3xl font-bold text-slate-900 md:text-4xl">
             Why choose <span className="text-blue-600">Trip Coach?</span>
           </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-center text-slate-600">
+          <p className="mx-auto mt-4 max-w-2xl text-center text-slate-600">
             Thoughtfully crafted experiences, expert support, and stress-free
             planning for every kind of traveler.
           </p>
@@ -95,11 +120,12 @@ export default function Home() {
             ].map((feature, index) => (
               <div
                 key={index}
-                className="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-1 hover:shadow-md">
+                className="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-1 hover:shadow-md"
+              >
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
                   <feature.icon size={24} />
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                <h3 className="mb-2 text-lg font-semibold text-slate-900">
                   {feature.title}
                 </h3>
                 <p className="text-sm text-slate-600">{feature.description}</p>
@@ -111,16 +137,31 @@ export default function Home() {
       </section>
 
       {/* 3. Popular trips / packages */}
-      <section className="py-16 bg-white">
+      <section className="bg-white py-16">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
               Handpicked trips for every traveler
             </h2>
             <p className="mt-3 max-w-2xl text-slate-600">
               Browse a selection of our most-loved getaways, from weekend city
               breaks to once-in-a-lifetime adventures.
             </p>
+          </div>
+
+          {/* FEATURED CITIES – ADDED */}
+          <div className="mt-6 flex flex-wrap justify-center gap-3 text-xs md:text-sm">
+            {["Bangkok", "Bali", "Paris", "Tokyo", "Dubai", "Singapore"].map(
+              (city) => (
+                <button
+                  key={city}
+                  className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-slate-700 transition hover:border-blue-500 hover:bg-blue-50 hover:text-blue-700"
+                >
+                  <MapPin size={14} />
+                  {city}
+                </button>
+              ),
+            )}
           </div>
 
           <div className="mt-10 grid gap-8 md:grid-cols-3">
@@ -146,9 +187,10 @@ export default function Home() {
             ].map((trip, index) => (
               <div
                 key={index}
-                className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50/60 p-6 shadow-sm">
+                className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50/60 p-6 shadow-sm"
+              >
                 <div>
-                  <div className="flex items-center gap-2 text-xs font-medium text-blue-600 uppercase tracking-wide mb-2">
+                  <div className="mb-2 flex items-center gap-2 text-xs font-medium tracking-wide text-blue-600 uppercase">
                     <Globe2 size={14} />
                     {trip.location}
                   </div>
@@ -163,7 +205,8 @@ export default function Home() {
                   <Link href="/packages">
                     <Button
                       size="sm"
-                      className="w-full bg-blue-600 text-white hover:bg-blue-700">
+                      className="w-full bg-blue-600 text-white hover:bg-blue-700"
+                    >
                       View details
                     </Button>
                   </Link>
@@ -175,10 +218,10 @@ export default function Home() {
       </section>
 
       {/* 4. How it works */}
-      <section className="py-16 md:py-20 bg-slate-900">
+      <section className="bg-slate-900 py-16 md:py-20">
         <div className="container mx-auto px-4 text-white">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-bold md:text-4xl">
               Plan your trip in 3 simple steps
             </h2>
             <p className="mt-3 text-slate-300">
@@ -210,8 +253,9 @@ export default function Home() {
             ].map((item) => (
               <div
                 key={item.step}
-                className="rounded-2xl bg-slate-800/60 p-6 border border-slate-700">
-                <div className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-500 text-sm font-semibold">
+                className="rounded-2xl border border-slate-700 bg-slate-800/60 p-6"
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-sm font-semibold">
                   {item.step}
                 </div>
                 <h3 className="mt-4 text-lg font-semibold">{item.title}</h3>
@@ -225,10 +269,10 @@ export default function Home() {
       </section>
 
       {/* 5. Testimonials */}
-      <section className="py-16 md:py-20 bg-slate-50">
+      <section className="bg-slate-50 py-16 md:py-20">
         <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
               Loved by modern travelers
             </h2>
             <p className="mt-3 text-slate-600">
@@ -259,8 +303,9 @@ export default function Home() {
             ].map((t, index) => (
               <div
                 key={index}
-                className="rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
-                <div className="flex items-center gap-2 text-yellow-500 mb-3">
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+              >
+                <div className="mb-3 flex items-center gap-2 text-yellow-500">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
@@ -285,14 +330,101 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. FAQ */}
-      <section className="py-16 bg-white">
+      {/* 5.5 Become a Guide */}
+      <section className="bg-blue-50 py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 text-center">
+          <div className="mx-auto flex max-w-4xl flex-col items-center gap-8 md:flex-row">
+            <div className="flex-1 text-center md:text-left">
+              <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
+                Share your city. Earn as a guide.
+              </h2>
+              <p className="mt-3 text-slate-600">
+                Turn your local knowledge into unforgettable experiences for
+                travelers. Create custom tours, set your own schedule, and get
+                paid doing what you love.
+              </p>
+              <ul className="mt-4 space-y-2 text-sm text-slate-600">
+                <li className="flex items-center gap-2">
+                  <Users size={16} className="text-blue-600" />
+                  Host private or group tours on your own terms.
+                </li>
+                <li className="flex items-center gap-2">
+                  <Star size={16} className="text-blue-600" />
+                  Build your reputation with verified reviews.
+                </li>
+                <li className="flex items-center gap-2">
+                  <ShieldCheck size={16} className="text-blue-600" />
+                  Secure payments and dedicated support.
+                </li>
+              </ul>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link href="/become-a-guide">
+                  <Button className="bg-blue-600 text-white hover:bg-blue-700">
+                    Become a Guide
+                  </Button>
+                </Link>
+                <Link href="/guide-faq">
+                  <Button
+                    variant="outline"
+                    className="border-blue-200 text-blue-700 hover:bg-blue-50"
+                  >
+                    Learn more
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            <div className="flex-1">
+              <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+                <p className="text-xs font-semibold tracking-wide text-blue-600 uppercase">
+                  Featured local guides
+                </p>
+                <div className="mt-4 space-y-3 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-slate-900">
+                      Maya • Bangkok street food
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-slate-500">
+                      <Star size={12} className="text-yellow-400" />
+                      4.9
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-slate-900">
+                      Diego • Barcelona highlights
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-slate-500">
+                      <Star size={12} className="text-yellow-400" />
+                      4.8
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-slate-900">
+                      Aiko • Hidden Tokyo neighborhoods
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-slate-500">
+                      <Star size={12} className="text-yellow-400" />
+                      5.0
+                    </span>
+                  </div>
+                </div>
+                <p className="mt-4 text-xs text-slate-500">
+                  Join hundreds of trusted guides already hosting experiences
+                  with Trip Coach.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. FAQ */}
+      <section className="bg-white py-16">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-3xl">
+            <h2 className="text-center text-3xl font-bold text-slate-900 md:text-4xl">
               Frequently asked questions
             </h2>
-            <p className="mt-3 text-slate-600 text-center">
+            <p className="mt-3 text-center text-slate-600">
               Quick answers to common questions about planning with Trip Coach.
             </p>
 
@@ -313,13 +445,14 @@ export default function Home() {
               ].map((item, index) => (
                 <div
                   key={index}
-                  className="rounded-2xl border border-slate-200 bg-slate-50/60 p-4 md:p-5">
+                  className="rounded-2xl border border-slate-200 bg-slate-50/60 p-4 md:p-5"
+                >
                   <div className="flex items-start gap-3">
                     <div className="mt-1 text-blue-600">
                       <HelpCircle size={18} />
                     </div>
                     <div>
-                      <h3 className="text-sm md:text-base font-semibold text-slate-900">
+                      <h3 className="text-sm font-semibold text-slate-900 md:text-base">
                         {item.q}
                       </h3>
                       <p className="mt-1 text-sm text-slate-600">{item.a}</p>
@@ -335,13 +468,13 @@ export default function Home() {
       {/* 7. Final CTA / trust */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="relative overflow-hidden rounded-3xl bg-linear-to-r from-blue-600 via-blue-500 to-indigo-500 px-6 py-10 md:px-10 md:py-12 text-center text-white">
+          <div className="relative overflow-hidden rounded-3xl bg-linear-to-r from-blue-600 via-blue-500 to-indigo-500 px-6 py-10 text-center text-white md:px-10 md:py-12">
             <div className="mx-auto max-w-2xl">
-              <p className="text-sm font-medium uppercase tracking-wide text-blue-100">
+              <p className="text-sm font-medium tracking-wide text-blue-100 uppercase">
                 Ready when you are
               </p>
 
-              <h2 className="mt-3 text-3xl md:text-4xl font-semibold">
+              <h2 className="mt-3 text-3xl font-semibold md:text-4xl">
                 Ready to start your next adventure?
               </h2>
 
@@ -354,7 +487,8 @@ export default function Home() {
                 <Link href="/packages">
                   <Button
                     size="lg"
-                    className="bg-white text-blue-600 hover:bg-blue-50 font-semibold shadow-md hover:shadow-lg">
+                    className="bg-white font-semibold text-blue-600 shadow-md hover:bg-blue-50 hover:shadow-lg"
+                  >
                     View all packages
                   </Button>
                 </Link>
@@ -367,8 +501,8 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full border border-white/20" />
-            <div className="pointer-events-none absolute -left-20 -bottom-16 h-52 w-52 rounded-full border border-white/10" />
+            <div className="pointer-events-none absolute -top-10 -right-10 h-40 w-40 rounded-full border border-white/20" />
+            <div className="pointer-events-none absolute -bottom-16 -left-20 h-52 w-52 rounded-full border border-white/10" />
           </div>
         </div>
       </section>
