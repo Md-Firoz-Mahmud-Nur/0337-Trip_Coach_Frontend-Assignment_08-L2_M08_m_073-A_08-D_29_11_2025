@@ -19,7 +19,7 @@ export default function Header() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { user, isAuthenticated, isLoading } = useAppSelector(
-    (state) => state.auth
+    (state) => state.auth,
   );
   const [isOpen, setIsOpen] = useState(false);
 
@@ -37,6 +37,12 @@ export default function Header() {
     { href: "/", label: "Home" },
     { href: "/package", label: "Explore Tours" },
     { href: "/be-guide", label: "Become a Guide" },
+    ...(user?.role === "TOURIST"
+      ? [
+          { href: "/user/bookings", label: "My Bookings" },
+          { href: "/user/profile", label: "Profile" },
+        ]
+      : []),
   ];
 
   return (
@@ -55,12 +61,13 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden items-center gap-8 md:flex">
           {links.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="relative text-sm font-medium text-slate-600 transition-colors hover:text-blue-600 after:absolute after:left-0 after:-bottom-1.5 after:h-0.5 after:w-0 after:bg-blue-600 after:transition-all hover:after:w-full">
+              className="relative text-sm font-medium text-slate-600 transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-0 after:bg-blue-600 after:transition-all hover:text-blue-600 hover:after:w-full"
+            >
               {item.label}
             </Link>
           ))}
@@ -72,7 +79,8 @@ export default function Header() {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="outline"
-                  className="gap-2 rounded-full border-slate-200 bg-white/70 px-3 text-sm font-medium hover:bg-slate-50">
+                  className="gap-2 rounded-full border-slate-200 bg-white/70 px-3 text-sm font-medium hover:bg-slate-50"
+                >
                   <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-xs font-semibold text-blue-700">
                     {user.name?.[0]?.toUpperCase() ||
                       user.email?.[0]?.toUpperCase()}
@@ -82,14 +90,12 @@ export default function Header() {
                   </span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem disabled className="text-xs text-slate-500">
-                  {user.email}
-                </DropdownMenuItem>
+              <DropdownMenuContent align="end" className="w-56 bg-sky-50">
                 <DropdownMenuItem asChild>
                   <Link
                     href={dashboardHref}
-                    className="flex items-center gap-2">
+                    className="flex items-center gap-2"
+                  >
                     <LayoutDashboard size={16} />
                     <span>Dashboard</span>
                   </Link>
@@ -97,18 +103,20 @@ export default function Header() {
                 <DropdownMenuItem
                   onClick={handleLogout}
                   disabled={isLoading}
-                  className="gap-2 text-red-600 focus:text-red-600">
+                  className="gap-2 text-red-600 focus:text-red-600"
+                >
                   <LogOut size={16} />
                   <span>Logout</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <div className="hidden md:flex items-center gap-2">
+            <div className="hidden items-center gap-2 md:flex">
               <Link href="/auth/login">
                 <Button
                   variant="outline"
-                  className="rounded-full border-slate-200 px-4 text-sm">
+                  className="rounded-full border-slate-200 px-4 text-sm"
+                >
                   Login
                 </Button>
               </Link>

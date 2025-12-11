@@ -44,10 +44,12 @@ export default function AdminUsers() {
   const dispatch = useAppDispatch();
   const { users, isLoading, error } = useAppSelector((state) => state.users);
   const [selectedUser, setSelectedUser] = useState<(typeof users)[0] | null>(
-    null
+    null,
   );
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [newRole, setNewRole] = useState<"USER" | "ADMIN">("USER");
+  const [newRole, setNewRole] = useState<"TOURIST" | "GUIDE" | "ADMIN">(
+    "TOURIST",
+  );
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -109,7 +111,7 @@ export default function AdminUsers() {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-6 p-6">
       <div>
         <h1 className="text-3xl font-bold">Users Management</h1>
         <p className="text-muted-foreground">
@@ -118,8 +120,8 @@ export default function AdminUsers() {
       </div>
 
       {error && (
-        <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg text-destructive flex items-start gap-2">
-          <AlertCircle size={20} className="mt-0.5 flex-shrink-0" />
+        <div className="bg-destructive/10 border-destructive/20 text-destructive flex items-start gap-2 rounded-lg border p-4">
+          <AlertCircle size={20} className="mt-0.5 shrink-0" />
           <div>
             <p className="font-medium">Error loading users</p>
             <p className="text-sm">{error}</p>
@@ -137,7 +139,7 @@ export default function AdminUsers() {
               <Loader2 className="animate-spin" size={32} />
             </div>
           ) : users.length === 0 ? (
-            <p className="text-muted-foreground text-center py-8">
+            <p className="text-muted-foreground py-8 text-center">
               No users found
             </p>
           ) : (
@@ -159,26 +161,29 @@ export default function AdminUsers() {
                       <TableCell>{user.email}</TableCell>
                       <TableCell>
                         <span
-                          className={`px-2 py-1 rounded text-sm font-medium ${
+                          className={`rounded px-2 py-1 text-sm font-medium ${
                             user.role === "ADMIN"
                               ? "bg-blue-100 text-blue-800"
                               : "bg-gray-100 text-gray-800"
-                          }`}>
+                          }`}
+                        >
                           {user.role}
                         </span>
                       </TableCell>
                       <TableCell>
                         <span
-                          className={`px-2 py-1 rounded text-sm font-medium ${getStatusBadgeClass(
-                            user.status
-                          )}`}>
+                          className={`rounded px-2 py-1 text-sm font-medium ${getStatusBadgeClass(
+                            user.status,
+                          )}`}
+                        >
                           {user.status}
                         </span>
                       </TableCell>
-                      <TableCell className="text-right space-x-2">
+                      <TableCell className="space-x-2 text-right">
                         <Dialog
                           open={isDialogOpen && selectedUser?._id === user._id}
-                          onOpenChange={setIsDialogOpen}>
+                          onOpenChange={setIsDialogOpen}
+                        >
                           <DialogTrigger asChild>
                             <Button
                               variant="outline"
@@ -187,7 +192,8 @@ export default function AdminUsers() {
                                 setSelectedUser(user);
                                 setNewRole(user.role);
                               }}
-                              className="gap-1">
+                              className="gap-1"
+                            >
                               <Edit2 size={14} />
                               Edit Role
                             </Button>
@@ -203,8 +209,11 @@ export default function AdminUsers() {
                               <Select
                                 value={newRole}
                                 onValueChange={(value) =>
-                                  setNewRole(value as "USER" | "ADMIN")
-                                }>
+                                  setNewRole(
+                                    value as "TOURIST" | "GUIDE" | "ADMIN",
+                                  )
+                                }
+                              >
                                 <SelectTrigger>
                                   <SelectValue />
                                 </SelectTrigger>
@@ -215,7 +224,8 @@ export default function AdminUsers() {
                               </Select>
                               <Button
                                 onClick={handleUpdateRole}
-                                className="w-full">
+                                className="w-full"
+                              >
                                 Save Changes
                               </Button>
                             </div>
@@ -228,7 +238,8 @@ export default function AdminUsers() {
                             onClick={() =>
                               handleUpdateStatus(user._id, "ACTIVE")
                             }
-                            className="gap-1 text-green-600 hover:text-green-700">
+                            className="gap-1 text-green-600 hover:text-green-700"
+                          >
                             <LockOpen size={14} />
                             Unblock
                           </Button>
@@ -239,7 +250,8 @@ export default function AdminUsers() {
                             onClick={() =>
                               handleUpdateStatus(user._id, "BLOCKED")
                             }
-                            className="gap-1">
+                            className="gap-1"
+                          >
                             <Lock size={14} />
                             Block
                           </Button>

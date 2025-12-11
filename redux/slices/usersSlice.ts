@@ -1,68 +1,64 @@
+"use client";
 
-
-
-
-"use client"
-
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 export interface AdminUser {
-  _id: string
-  email: string
-  name: string
-  role: "USER" | "ADMIN"
-  status: "ACTIVE" | "INACTIVE" | "BLOCKED" | "DELETED"
-  createdAt: string
+  _id: string;
+  email: string;
+  name: string;
+  role: "TOURIST" | "GUIDE" | "ADMIN";
+  status: "ACTIVE" | "INACTIVE" | "BLOCKED" | "DELETED";
+  createdAt: string;
 }
 
 interface UsersState {
-  users: AdminUser[]
-  isLoading: boolean
-  error: string | null
+  users: AdminUser[];
+  isLoading: boolean;
+  error: string | null;
 }
 
 const initialState: UsersState = {
   users: [],
   isLoading: false,
   error: null,
-}
+};
 
 const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
     fetchUsersStart(state) {
-      state.isLoading = true
-      state.error = null
+      state.isLoading = true;
+      state.error = null;
     },
     fetchUsersSuccess(state, action: PayloadAction<AdminUser[]>) {
-      state.isLoading = false
-      state.users = action.payload
+      state.isLoading = false;
+      state.users = action.payload;
     },
     fetchUsersError(state, action: PayloadAction<string>) {
-      state.isLoading = false
-      state.error = action.payload
+      state.isLoading = false;
+      state.error = action.payload;
     },
     updateUserStart(state) {
-      state.isLoading = true
-      state.error = null
+      state.isLoading = true;
+      state.error = null;
     },
     updateUserSuccess(state, action: PayloadAction<AdminUser>) {
-      state.isLoading = false
-      const index = state.users.findIndex((u) => u._id === action.payload._id)
+      state.isLoading = false;
+      const index = state.users.findIndex((u) => u._id === action.payload._id);
       if (index !== -1) {
-        state.users[index] = action.payload
+        state.users[index] = action.payload;
       }
     },
     updateUserStatusSuccess(state, action: PayloadAction<AdminUser>) {
-      state.isLoading = false
-      const index = state.users.findIndex((u) => u._id === action.payload._id)
+      state.isLoading = false;
+      const index = state.users.findIndex((u) => u._id === action.payload._id);
       if (index !== -1) {
-        state.users[index] = action.payload
+        state.users[index] = action.payload;
       }
     },
   },
-})
+});
 
 export const {
   fetchUsersStart,
@@ -71,6 +67,6 @@ export const {
   updateUserStart,
   updateUserSuccess,
   updateUserStatusSuccess,
-} = usersSlice.actions
+} = usersSlice.actions;
 
-export default usersSlice.reducer
+export default usersSlice.reducer;
