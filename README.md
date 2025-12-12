@@ -2,6 +2,14 @@
 
 This is a travel booking platform where tourists can search and book travel packages offered by local guides. The platform offers a user-friendly interface for tourists to browse and book travel packages, as well as manage their bookings and spending. The platform also offers a guide application workflow for users to apply as local guides, with features such as package management and booking management.
 
+## 🚀 Live Demo
+
+> [Trip Coach](https://0337-trip-coach-frontend-assignment.vercel.app)
+
+> Frontend: [Trip Coach Client](https://github.com/Md-Firoz-Mahmud-Nur/0337-Trip_Coach_Frontend-Assignment_08-L2_M08_m_073-A_08-D_29_11_2025)
+
+> Backend: [Trip Coach Server](https://github.com/Md-Firoz-Mahmud-Nur/0336-Trip_Coach_Backend-Assignment_08-L2_M08_m_073-A_08-D_29_11_2025)
+
 ## Features
 
 ### Role-based experience
@@ -57,13 +65,21 @@ The technology stack for this platform includes:
 * HTTP & API: Axios instance (apiClient) with typed API helpers in @/lib/api
 * RESTful backend endpoints under /api/v1/.../
 
-## Setup Instructions
+##  Local Setup
 
-1. Clone the repository
-2. Install dependencies
-3. Configure environment variables
-4. Run the development server
-5. Use the platform
+### 1️⃣ Clone & Install
+
+```
+git clone https://github.com/Md-Firoz-Mahmud-Nur/0337-Trip_Coach_Frontend-Assignment_08-L2_M08_m_073-A_08-D_29_11_2025.git
+cd 0337-Trip_Coach_Frontend-Assignment_08-L2_M08_m_073-A_08-D_29_11_2025
+npm install
+```
+
+### 2️⃣ Run Locally
+
+```
+npm run dev
+```
 
 ## Environment Variables
 
@@ -91,3 +107,15 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:5000/api/v1
    * View and manage users, verify/block accounts.
    * Review pending guide applications and approve/reject.
    * Manage all packages and see aggregated booking/revenue stats.
+
+## 👨‍💻 Developed by
+
+### Md. Firoz Mahmud Nur
+
+Full-Stack Web Developer
+
+> 📧 firoznur5@gmail.com
+
+> 📧 [Portfolio](https://nurweb.dev)
+ 
+> 🔗 [LinkedIn](https://www.linkedin.com/in/md-firoz-mahmud-nur)
