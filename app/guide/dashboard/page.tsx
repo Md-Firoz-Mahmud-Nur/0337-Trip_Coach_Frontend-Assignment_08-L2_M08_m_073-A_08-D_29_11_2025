@@ -38,11 +38,15 @@ export default function UserDashboard() {
     error: packagesError,
   } = useAppSelector((state) => state.packages);
 
+  console.log(packages);
+
   const {
     userBookings,
     isLoading: bookingsLoading,
     error: bookingsError,
   } = useAppSelector((state) => state.bookings);
+
+  console.log(userBookings);
 
   useEffect(() => {
     const fetchPackages = async () => {

@@ -1,13 +1,13 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Bookmark, LayoutDashboard, User } from "lucide-react";
+import { LayoutDashboard, Package, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const userNav = [
   { href: "/guide/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/guide/bookings", label: "My Bookings", icon: Bookmark },
+  { href: "/guide/packages", label: "Packages", icon: Package },
   { href: "/guide/profile", label: "Profile", icon: User },
 ];
 

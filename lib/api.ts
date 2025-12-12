@@ -44,6 +44,9 @@ export const api = {
 
   getPackages: () => apiClient.get("/package/all"),
 
+  getGuidePackages: (guideId: string) =>
+    apiClient.get(`/package/my/${guideId}`),
+
   getPackageById: (id: string) => apiClient.get(`/package/${id}`),
 
   getUsers: () => apiClient.get("/user/all-users"),
@@ -71,10 +74,8 @@ export const api = {
 
   getPendingGuides: () => apiClient.get("/user/pending-guide"),
 
-  approveGuide: (userId: string) =>
-    apiClient.patch(`/user/approve/${userId}`),
-  rejectGuide: (userId: string) =>
-    apiClient.patch(`/user/reject/${userId}`),
+  approveGuide: (userId: string) => apiClient.patch(`/user/approve/${userId}`),
+  rejectGuide: (userId: string) => apiClient.patch(`/user/reject/${userId}`),
 
   updateUserProfile: (userId: string, data: { name: string }) =>
     apiClient.patch(`/user/${userId}`, data),

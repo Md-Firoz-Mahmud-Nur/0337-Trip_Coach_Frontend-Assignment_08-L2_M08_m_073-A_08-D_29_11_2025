@@ -25,6 +25,7 @@ const packagesSlice = createSlice({
       state.isLoading = true
       state.error = null
     },
+
     fetchPackagesSuccess(state, action: PayloadAction<Package[]>) {
       state.isLoading = false
       state.items = action.payload
