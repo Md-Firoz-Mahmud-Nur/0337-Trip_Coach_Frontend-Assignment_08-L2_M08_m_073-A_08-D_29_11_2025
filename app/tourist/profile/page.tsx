@@ -20,6 +20,9 @@ import { useState } from "react";
 export default function UserProfile() {
   const { user } = useAppSelector((state) => state.auth);
   const [isEditing, setIsEditing] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: user?.name || "",
     email: user?.email || "",
@@ -40,10 +43,28 @@ export default function UserProfile() {
   const [passwordSuccess, setPasswordSuccess] = useState<string | null>(null);
 
   const handleSave = async () => {
+    if (!user) return;
+
     try {
+      setSaveError(null);
+      setSaveSuccess(null);
+      setSaveLoading(true);
+
+      await api.updateUserProfile(user._id, {
+        name: formData.name,
+      });
+
       setIsEditing(false);
-    } catch (err) {
-      console.error("Failed to update profile:", err);
+      setSaveSuccess("Profile updated successfully.");
+    } catch (err: any) {
+      console.error("updateUserProfile error:", err);
+      const msg =
+        err?.response?.data?.message ||
+        err?.message ||
+        "Failed to update profile.";
+      setSaveError(msg);
+    } finally {
+      setSaveLoading(false);
     }
   };
 
@@ -86,12 +107,21 @@ export default function UserProfile() {
                 className="mt-1"
               />
             </div>
+            {saveLoading && (
+              <p className="text-xs text-slate-500">Saving changes...</p>
+            )}
+            {saveError && <p className="text-xs text-red-600">{saveError}</p>}
+            {saveSuccess && (
+              <p className="text-xs text-emerald-600">{saveSuccess}</p>
+            )}
             <div className="flex gap-2">
               {!isEditing ? (
                 <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
               ) : (
                 <>
-                  <Button onClick={handleSave}>Save Changes</Button>
+                  <Button onClick={handleSave} disabled={saveLoading}>
+                    {saveLoading ? "Saving..." : "Save Changes"}
+                  </Button>
                   <Button variant="outline" onClick={() => setIsEditing(false)}>
                     Cancel
                   </Button>

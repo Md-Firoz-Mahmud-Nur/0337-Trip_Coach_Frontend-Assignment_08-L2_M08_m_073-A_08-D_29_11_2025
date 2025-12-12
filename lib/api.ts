@@ -58,6 +58,9 @@ export const api = {
     status: "ACTIVE" | "INACTIVE" | "BLOCKED" | "DELETED",
   ) => apiClient.patch(`/user/${userId}`, { status }),
 
+  updateUserProfile: (userId: string, data: { name: string }) =>
+    apiClient.patch(`/user/${userId}`, data),
+
   updateUserVerify: (userId: string, isVerified: boolean) =>
     apiClient.patch(`/user/${userId}`, { isVerified }),
 
@@ -100,8 +103,6 @@ export const api = {
     apiClient.patch(`/booking/me/${bookingId}/cancel`, {}),
 
   getUserProfile: () => apiClient.get("/profile"),
-
-  updateUserProfile: (data: object) => apiClient.patch("/profile", data),
 
   updateUserPassword: (data: object) => apiClient.patch("/password", data),
 
