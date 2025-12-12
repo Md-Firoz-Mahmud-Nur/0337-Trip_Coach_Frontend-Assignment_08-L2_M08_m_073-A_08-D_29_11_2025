@@ -58,6 +58,17 @@ export const api = {
     status: "ACTIVE" | "INACTIVE" | "BLOCKED" | "DELETED",
   ) => apiClient.patch(`/user/${userId}`, { status }),
 
+  applyGuide: (data: {
+    city: string;
+    languages: string[];
+    experience: string;
+    tourType: string;
+    availability: string;
+    bio: string;
+    portfolio?: string;
+    social?: string;
+  }) => apiClient.post("/user/apply-guide", data),
+
   updateUserProfile: (userId: string, data: { name: string }) =>
     apiClient.patch(`/user/${userId}`, data),
 

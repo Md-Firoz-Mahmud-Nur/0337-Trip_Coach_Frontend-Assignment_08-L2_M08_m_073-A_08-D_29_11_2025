@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { api } from "@/lib/api";
 import { useAppSelector } from "@/redux/hooks";
 import {
   AlertCircle,
@@ -50,6 +52,33 @@ const GuideApplicationPage = () => {
     }
   }, [user]);
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setError(null);
+  //   setSuccessMessage("");
+
+  //   if (!acceptedTerms) {
+  //     setError("You must agree to the guide guidelines before submitting.");
+  //     return;
+  //   }
+
+  //   try {
+  //     setIsLoading(true);
+  //     await new Promise((resolve) => setTimeout(resolve, 1500));
+
+  //     setSuccessMessage(
+  //       "Application submitted successfully! Our team will contact you by email.",
+  //     );
+  //   } catch (err) {
+  //     setError(
+  //       "Something went wrong while submitting your application. Please try again.",
+  //     );
+  //     console.error(err);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -60,18 +89,56 @@ const GuideApplicationPage = () => {
       return;
     }
 
+    // basic front-end validation if you want
+    if (
+      !city ||
+      !languages ||
+      !experience ||
+      !tourType ||
+      !availability ||
+      !bio
+    ) {
+      setError("Please fill in all required fields.");
+      return;
+    }
+
     try {
       setIsLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      await api.applyGuide({
+        city,
+        languages: languages
+          .split(",")
+          .map((l) => l.trim())
+          .filter(Boolean),
+        experience,
+        tourType,
+        availability,
+        bio,
+        portfolio: portfolio || undefined,
+        social: social || undefined,
+      });
 
       setSuccessMessage(
         "Application submitted successfully! Our team will contact you by email.",
       );
-    } catch (err) {
-      setError(
-        "Something went wrong while submitting your application. Please try again.",
-      );
-      console.error(err);
+
+      // optionally clear form (except name/email)
+      setCity("");
+      setLanguages("");
+      setExperience("");
+      setTourType("");
+      setAvailability("");
+      setBio("");
+      setPortfolio("");
+      setSocial("");
+      setAcceptedTerms(false);
+    } catch (err: any) {
+      console.error("applyGuide error:", err);
+      const msg =
+        err?.response?.data?.message ||
+        "Something went wrong while submitting your application. Please try again.";
+      setError(msg);
     } finally {
       setIsLoading(false);
     }
