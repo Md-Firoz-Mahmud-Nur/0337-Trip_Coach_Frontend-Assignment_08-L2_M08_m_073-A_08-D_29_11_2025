@@ -6,18 +6,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { api } from "@/lib/api";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
-  fetchBookingsError,
-  fetchBookingsStart,
-  fetchUserBookingsSuccess,
-} from "@/redux/slices/bookingsSlice";
-import {
   fetchPackagesError,
   fetchPackagesStart,
   fetchPackagesSuccess,
 } from "@/redux/slices/packagesSlice";
-import { Bookmark, Loader2, Package, Wallet } from "lucide-react";
+import { Bookmark, Loader2, Wallet } from "lucide-react";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface Booking {
   status: string;
@@ -38,15 +33,7 @@ export default function UserDashboard() {
     error: packagesError,
   } = useAppSelector((state) => state.packages);
 
-  console.log(packages);
-
-  const {
-    userBookings,
-    isLoading: bookingsLoading,
-    error: bookingsError,
-  } = useAppSelector((state) => state.bookings);
-
-  console.log(userBookings);
+  console.log({ packages });
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -75,30 +62,29 @@ export default function UserDashboard() {
     }
   }, [dispatch, packages.length]);
 
-  useEffect(() => {
-    const fetchBookings = async () => {
-      dispatch(fetchBookingsStart());
-      try {
-        const response = await api.getUserBookings();
+  const [totalPackageCount, setTotalPackageCount] = useState(0);
 
-        const data = Array.isArray(response.data?.data)
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchGuidePackagesCount = async () => {
+      try {
+        const response = await api.getGuidePackages(user._id);
+
+        const pkgs = Array.isArray(response.data?.data)
           ? response.data.data
           : Array.isArray(response.data)
             ? response.data
             : [];
 
-        dispatch(fetchUserBookingsSuccess(data));
+        setTotalPackageCount(pkgs.length);
       } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Failed to fetch bookings";
-        dispatch(fetchBookingsError(errorMessage));
+        console.error("Failed to fetch guide packages count:", err);
       }
     };
 
-    if (userBookings.length === 0) {
-      fetchBookings();
-    }
-  }, [dispatch, userBookings.length]);
+    fetchGuidePackagesCount();
+  }, [user]);
 
   if (!user?.isGuideDocumentSubmit) {
     return (
@@ -125,39 +111,20 @@ export default function UserDashboard() {
     );
   }
 
-  const activeCount = userBookings.filter(
-    (b: Booking) => b.status === "CONFIRMED",
-  ).length;
-  const pendingCount = userBookings.filter(
-    (b: Booking) => b.status === "PENDING",
-  ).length;
-  const totalSpent = userBookings.reduce(
-    (sum: number, b: Booking) =>
-      b.status === "CONFIRMED" ? sum + (b.totalAmount || 0) : sum,
-    0,
-  );
-
-  const isLoading = packagesLoading || bookingsLoading;
-  const error = packagesError || bookingsError;
+  const isLoading = packagesLoading;
+  const error = packagesError;
 
   const statCards = [
     {
-      title: "Active bookings",
-      value: activeCount,
+      title: "Total Packages",
+      value: totalPackageCount,
       icon: Bookmark,
       color: "text-blue-500",
       bg: "bg-blue-50",
     },
     {
-      title: "Pending bookings",
-      value: pendingCount,
-      icon: Package,
-      color: "text-emerald-500",
-      bg: "bg-emerald-50",
-    },
-    {
-      title: "Total spent",
-      value: `$${totalSpent.toFixed(2)}`,
+      title: "Total Earn",
+      value: 0,
       icon: Wallet,
       color: "text-purple-500",
       bg: "bg-purple-50",
