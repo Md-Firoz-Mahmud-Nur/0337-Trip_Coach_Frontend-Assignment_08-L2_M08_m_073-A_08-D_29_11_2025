@@ -56,8 +56,6 @@ export default function PackageTypeAdmin() {
         setLoading(true);
         const [packageTypes] = await Promise.all([api.getPackageTypes()]);
 
-        console.log({ packageTypes });
-
         const types = Array.isArray(packageTypes.data)
           ? packageTypes.data
           : packageTypes.data.data || [];

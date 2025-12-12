@@ -64,10 +64,10 @@ export const api = {
   createPackage: (data: object) => apiClient.post("/package/create", data),
 
   updatePackage: (packageId: string, data: object) =>
-    apiClient.patch(`/packages/${packageId}`, data),
+    apiClient.patch(`/package/${packageId}`, data),
 
   deletePackage: (packageId: string) =>
-    apiClient.delete(`/packages/${packageId}`),
+    apiClient.delete(`/package/${packageId}`),
 
   createPackageType: (data: object) => apiClient.post("/package/types", data),
 

@@ -101,6 +101,7 @@ const emptyForm: PackageFormState = {
 };
 
 export default function AdminPackages() {
+  const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const {
     items: packages,
@@ -111,6 +112,7 @@ export default function AdminPackages() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<PackageFormState>(emptyForm);
+  const [packageTypeError, setPackageTypeError] = useState<string | null>(null);
   const [packageTypes, setPackageTypes] = useState<PackageTypeOption[]>([]);
   const [filterType, setFilterType] = useState<string>("all");
 
@@ -175,17 +177,25 @@ export default function AdminPackages() {
     amenities: parseCommaList(formData.amenities),
     itinerary: parseCommaList(formData.itinerary),
     images: parseCommaList(formData.images),
+    packageType: formData.packageType,
+    meetingPoint: formData.meetingPoint,
+    guide: user?._id,
   });
 
   const handleSave = async () => {
     try {
+      if (!formData.packageType) {
+        setPackageTypeError("Package type is required.");
+        return;
+      }
+      setPackageTypeError(null);
+
       if (editingId) {
         const payload = buildPayload();
         await api.updatePackage(editingId, payload);
       } else {
         const payload = {
           ...buildPayload(),
-          packageType: formData.packageType || undefined,
         };
         await api.createPackage(payload);
       }
@@ -243,6 +253,10 @@ export default function AdminPackages() {
       images: Array.isArray((pkg as any).images)
         ? (pkg as any).images.join(", ")
         : "",
+      meetingPoint: pkg.meetingPoint || "",
+      guide: pkg.guide || user?._id,
+      availableSeats: pkg.availableSeats || 0,
+      isActive: true,
     });
     setIsDialogOpen(true);
   };
@@ -283,10 +297,11 @@ export default function AdminPackages() {
             </Button>
           </DialogTrigger>
 
-          <DialogContent className="max-h-[80vh] overflow-y-auto border border-blue-100 bg-white/95">
+          <DialogContent className="max-h-[80vh] overflow-y-auto border border-blue-100 bg-white">
             <DialogHeader>
               <DialogTitle className="text-lg font-semibold text-slate-900">
                 {editingId ? "Edit Package" : "Create Package"}
+                {` - By ${user?.name}`}
               </DialogTitle>
             </DialogHeader>
 
@@ -335,6 +350,20 @@ export default function AdminPackages() {
                     setFormData({
                       ...formData,
                       destination: e.target.value,
+                    })
+                  }
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label className="text-slate-700">Meeting Point</Label>
+                <Input
+                  value={formData.meetingPoint}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      meetingPoint: e.target.value,
                     })
                   }
                   className="mt-1"
@@ -589,17 +618,26 @@ export default function AdminPackages() {
               </div>
 
               <div>
-                <Label className="text-slate-700">Package Type</Label>
+                <Label className="text-slate-700">
+                  Package Type <span className="text-red-500">*</span>
+                </Label>
                 <Select
                   value={formData.packageType}
-                  onValueChange={(value) =>
+                  onValueChange={(value) => {
                     setFormData({
                       ...formData,
                       packageType: value,
-                    })
-                  }
+                    });
+                    setPackageTypeError(null);
+                  }}
                 >
-                  <SelectTrigger className="mt-1">
+                  <SelectTrigger
+                    className={`mt-1 ${
+                      packageTypeError
+                        ? "border-red-500 focus-visible:ring-red-500"
+                        : ""
+                    }`}
+                  >
                     <SelectValue placeholder="Select package type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -610,6 +648,11 @@ export default function AdminPackages() {
                     ))}
                   </SelectContent>
                 </Select>
+                {packageTypeError && (
+                  <p className="mt-1 text-xs text-red-600">
+                    {packageTypeError}
+                  </p>
+                )}
               </div>
 
               <Button

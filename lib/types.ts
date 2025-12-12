@@ -47,6 +47,8 @@ export interface Package {
   createdAt: string;
   updatedAt: string;
   slug: string;
+  guide: string;
+  meetingPoint: string;
 }
 
 export interface AuthResponse {
