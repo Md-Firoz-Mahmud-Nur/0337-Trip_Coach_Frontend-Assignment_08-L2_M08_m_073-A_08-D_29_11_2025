@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Trip Coach - Travel Booking Platform
 
-## Getting Started
+This is a travel booking platform where tourists can search and book travel packages offered by local guides. The platform offers a user-friendly interface for tourists to browse and book travel packages, as well as manage their bookings and spending. The platform also offers a guide application workflow for users to apply as local guides, with features such as package management and booking management.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Role-based experience
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The platform offers a role-based experience for tourists, guides, and admins, with different features and functionalities available based on the user's role.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Tourist dashboard
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The tourist dashboard provides features such as:
 
-## Learn More
+* Featured packages
+* Bookings
+* Spending stats
 
-To learn more about Next.js, take a look at the following resources:
+### Guide dashboard
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The guide dashboard provides features such as:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* Package management
+* Booking management
+* Application status
 
-## Deploy on Vercel
+### Admin dashboard
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The admin dashboard provides features such as:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* User management
+* Guide application management
+* Package management
+* Booking and revenue stats
+
+### Authentication & Authorization
+
+The platform uses a Redux-based auth state to manage user authentication and authorization. Users can log in and register, and protected routes are checked for ADMIN / GUIDE / TOURIST roles.
+
+### Guide application workflow
+
+The guide application workflow allows users to apply as local guides, with features such as:
+
+* Form for users to apply as local guides with city, languages, bio, and links.
+* Pending applications list for admin with Approve/Reject actions.
+
+## Technology Stack
+
+The technology stack for this platform includes:
+
+* Framework & Language: Next.js (App Router, client components)
+* State Management: Redux Toolkit (slices, async thunks)
+* React-Redux hooks (useAppSelector, useAppDispatch)
+* UI & Styling: Tailwind CSS
+* shadcn/ui (Button, Card, Dialog, Table, etc.)
+* Lucide React icons
+* HTTP & API: Axios instance (apiClient) with typed API helpers in @/lib/api
+* RESTful backend endpoints under /api/v1/.../
+
+## Setup Instructions
+
+1. Clone the repository
+2. Install dependencies
+3. Configure environment variables
+4. Run the development server
+5. Use the platform
+
+## Environment Variables
+
+Create a .env.local file in the project root and configure:
+
+NEXT_PUBLIC_API_BASE_URL=http://localhost:5000/api/v1
+
+## Usage
+
+### Tourist
+
+1. Register/login as a normal user.
+2. Browse packages, view details, and manage bookings from the dashboard.
+
+### Guide
+
+1. From the dashboard, open the "Become a guide" application page.
+2. Submit the guide form; wait for admin approval.
+3. After approval, create and manage your own packages from the guide packages page.
+
+### Admin
+
+1. Log in with an ADMIN account.
+2. Use the admin dashboards to:
+   * View and manage users, verify/block accounts.
+   * Review pending guide applications and approve/reject.
+   * Manage all packages and see aggregated booking/revenue stats.
