@@ -32,31 +32,6 @@ export default function UserDashboard() {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
 
-  if (!user?.isGuideDocumentSubmit) {
-    return (
-      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4">
-        <div className="w-full max-w-md rounded-2xl border border-dashed border-red-300 bg-red-50/70 px-6 py-8 text-center shadow-sm">
-          <p className="text-xs font-semibold tracking-wide text-blue-700 uppercase">
-            Become a guide
-          </p>
-          <h1 className="mt-2 text-2xl font-bold text-slate-900">
-            Complete your guide application
-          </h1>
-          <p className="mt-2 text-sm text-slate-600">
-            You have not submitted your guide documents yet. Finish your
-            application to start hosting tours and earning.
-          </p>
-          <Link
-            href="/be-guide"
-            className="mt-6 inline-flex items-center justify-center rounded-full bg-green-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-700"
-          >
-            Go to application
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   const {
     items: packages,
     isLoading: packagesLoading,
@@ -120,6 +95,31 @@ export default function UserDashboard() {
       fetchBookings();
     }
   }, [dispatch, userBookings.length]);
+
+  if (!user?.isGuideDocumentSubmit) {
+    return (
+      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4">
+        <div className="w-full max-w-md rounded-2xl border border-dashed border-red-300 bg-red-50/70 px-6 py-8 text-center shadow-sm">
+          <p className="text-xs font-semibold tracking-wide text-blue-700 uppercase">
+            Become a guide
+          </p>
+          <h1 className="mt-2 text-2xl font-bold text-slate-900">
+            Complete your guide application
+          </h1>
+          <p className="mt-2 text-sm text-slate-600">
+            You have not submitted your guide documents yet. Finish your
+            application to start hosting tours and earning.
+          </p>
+          <Link
+            href="/be-guide"
+            className="mt-6 inline-flex items-center justify-center rounded-full bg-green-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-700"
+          >
+            Go to application
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const activeCount = userBookings.filter(
     (b: Booking) => b.status === "CONFIRMED",

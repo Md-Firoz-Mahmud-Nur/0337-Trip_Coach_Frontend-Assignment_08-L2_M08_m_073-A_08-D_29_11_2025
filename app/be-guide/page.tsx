@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useAppSelector } from "@/redux/hooks";
 import {
   AlertCircle,
   CalendarClock,
@@ -21,9 +22,11 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const GuideApplicationPage = () => {
+  const { user } = useAppSelector((state) => state.auth);
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [city, setCity] = useState("");
@@ -39,6 +42,13 @@ const GuideApplicationPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      setFullName(user.name || "");
+      setEmail(user.email || "");
+    }
+  }, [user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -128,17 +138,15 @@ const GuideApplicationPage = () => {
                     className="mb-1.5 flex items-center gap-2 text-sm font-medium text-slate-800"
                   >
                     <User size={16} />
-                    Full name
+                    Name
                   </label>
                   <Input
                     id="fullName"
                     type="text"
-                    placeholder="Your full legal name"
                     value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    required
+                    readOnly
                     disabled={isLoading}
-                    className="text-sm"
+                    className="cursor-not-allowed bg-blue-50 text-sm"
                   />
                 </div>
 
@@ -152,12 +160,10 @@ const GuideApplicationPage = () => {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="you@example.com"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
+                    readOnly
                     disabled={isLoading}
-                    className="text-sm"
+                    className="cursor-not-allowed bg-blue-50 text-sm"
                   />
                 </div>
               </div>

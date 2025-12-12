@@ -26,8 +26,9 @@ export const handleRegister = (
   name: string,
   email: string,
   password: string,
+  role: string,
 ) => {
-  dispatch(registerUser({ name, email, password }));
+  dispatch(registerUser({ name, email, password, role }));
 };
 
 export const getStoredToken = (): string | null => {

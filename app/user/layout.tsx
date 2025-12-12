@@ -1,5 +1,6 @@
+import UserSidebar from "@/components/SidebarUser"
 import type React from "react"
-import UserSidebar from "@/components/UserSidebar"
+
 
 export default function UserLayout({
   children,
