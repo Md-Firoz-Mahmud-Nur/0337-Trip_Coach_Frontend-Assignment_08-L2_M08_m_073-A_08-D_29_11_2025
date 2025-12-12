@@ -13,11 +13,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/lib/api";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setUser } from "@/redux/slices/authSlice";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
 export default function UserProfile() {
+  const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const [isEditing, setIsEditing] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
@@ -52,6 +54,13 @@ export default function UserProfile() {
       await api.updateUserProfile(user._id, {
         name: formData.name,
       });
+
+      dispatch(
+        setUser({
+          ...user,
+          name: formData.name,
+        }),
+      );
 
       setIsEditing(false);
       setSaveSuccess("Profile updated successfully.");
