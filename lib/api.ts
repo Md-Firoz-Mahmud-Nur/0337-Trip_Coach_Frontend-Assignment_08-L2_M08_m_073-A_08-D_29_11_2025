@@ -69,6 +69,13 @@ export const api = {
     social?: string;
   }) => apiClient.post("/user/apply-guide", data),
 
+  getPendingGuides: () => apiClient.get("/user/pending-guide"),
+
+  approveGuide: (userId: string) =>
+    apiClient.patch(`/user/approve/${userId}`),
+  rejectGuide: (userId: string) =>
+    apiClient.patch(`/user/reject/${userId}`),
+
   updateUserProfile: (userId: string, data: { name: string }) =>
     apiClient.patch(`/user/${userId}`, data),
 

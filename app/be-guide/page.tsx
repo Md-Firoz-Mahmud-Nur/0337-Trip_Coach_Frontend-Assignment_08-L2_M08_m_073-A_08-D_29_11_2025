@@ -11,7 +11,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { api } from "@/lib/api";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setUser } from "@/redux/slices/authSlice";
 import {
   AlertCircle,
   CalendarClock,
@@ -27,6 +28,8 @@ import type React from "react";
 import { useEffect, useState } from "react";
 
 const GuideApplicationPage = () => {
+  const dispatch = useAppDispatch();
+
   const { user } = useAppSelector((state) => state.auth);
 
   const [fullName, setFullName] = useState("");
@@ -52,33 +55,6 @@ const GuideApplicationPage = () => {
     }
   }, [user]);
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setError(null);
-  //   setSuccessMessage("");
-
-  //   if (!acceptedTerms) {
-  //     setError("You must agree to the guide guidelines before submitting.");
-  //     return;
-  //   }
-
-  //   try {
-  //     setIsLoading(true);
-  //     await new Promise((resolve) => setTimeout(resolve, 1500));
-
-  //     setSuccessMessage(
-  //       "Application submitted successfully! Our team will contact you by email.",
-  //     );
-  //   } catch (err) {
-  //     setError(
-  //       "Something went wrong while submitting your application. Please try again.",
-  //     );
-  //     console.error(err);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -89,7 +65,6 @@ const GuideApplicationPage = () => {
       return;
     }
 
-    // basic front-end validation if you want
     if (
       !city ||
       !languages ||
@@ -119,11 +94,14 @@ const GuideApplicationPage = () => {
         social: social || undefined,
       });
 
+      if (user) {
+        dispatch(setUser({ ...user, isGuideDocumentSubmit: true }));
+      }
+
       setSuccessMessage(
         "Application submitted successfully! Our team will contact you by email.",
       );
 
-      // optionally clear form (except name/email)
       setCity("");
       setLanguages("");
       setExperience("");
@@ -143,6 +121,31 @@ const GuideApplicationPage = () => {
       setIsLoading(false);
     }
   };
+
+  if (user?.isGuideDocumentSubmit) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
+        <Card className="w-full max-w-md text-center shadow-sm">
+          <CardHeader>
+            <CardTitle className="flex flex-col items-center gap-2">
+              <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
+              <span>Application under review</span>
+            </CardTitle>
+            <CardDescription>
+              Your guide application has been submitted and is waiting for admin
+              approval.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-slate-600">
+              You will receive an email once your application is approved or if
+              more information is needed.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-linear-to-b from-slate-50 to-slate-100 px-4 py-10">

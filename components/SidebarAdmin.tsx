@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   Package,
   User,
+  UserRoundPlus,
   Users,
 } from "lucide-react";
 import Link from "next/link";
@@ -16,6 +17,11 @@ import { usePathname } from "next/navigation";
 const adminNav = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/users", label: "Users", icon: Users },
+  {
+    href: "/admin/guide-application",
+    label: "Guide Apply",
+    icon: UserRoundPlus,
+  },
   { href: "/admin/package-types", label: "Package Types", icon: Box },
   { href: "/admin/packages", label: "Packages", icon: Package },
   { href: "/admin/bookings", label: "Bookings", icon: Bookmark },
