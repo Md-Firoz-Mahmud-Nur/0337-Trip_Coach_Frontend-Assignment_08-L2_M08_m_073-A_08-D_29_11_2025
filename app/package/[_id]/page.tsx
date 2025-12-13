@@ -8,6 +8,12 @@ import { api } from "@/lib/api";
 import type { Package } from "@/lib/types";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
+  addUserBooking,
+  fetchBookingsError,
+  fetchBookingsStart,
+  fetchUserBookingsSuccess,
+} from "@/redux/slices/bookingsSlice";
+import {
   fetchPackageDetailError,
   fetchPackageDetailStart,
   fetchPackageDetailSuccess,
@@ -57,6 +63,22 @@ export default function PackageDetailPage() {
     fetchPackageDetail();
   }, [dispatch, id]);
 
+  useEffect(() => {
+    const fetchBookings = async () => {
+      dispatch(fetchBookingsStart());
+      try {
+        const response = await api.getUserBookings();
+        dispatch(fetchUserBookingsSuccess(response.data.data));
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to fetch bookings";
+        dispatch(fetchBookingsError(errorMessage));
+      }
+    };
+
+    fetchBookings();
+  }, [dispatch]);
+
   const pkg = localPackage || selectedPackage;
 
   console.log(pkg);
@@ -90,8 +112,6 @@ export default function PackageDetailPage() {
   const handleBookNow = async () => {
     if (!pkg?._id) return;
 
-    console.log(pkg);
-
     try {
       setIsBooking(true);
       setBookingError(null);
@@ -102,10 +122,12 @@ export default function PackageDetailPage() {
         totalAmount: pkg.costFrom,
       });
 
-      console.log(bookingRes);
+      const createdBooking = bookingRes.data.data || bookingRes.data;
+
+      dispatch(addUserBooking(createdBooking));
 
       if (bookingRes.status === 201) {
-        router.push(`/tourist/bookings`);
+        router.push("/tourist/bookings");
       }
     } catch (err: any) {
       const msg =
