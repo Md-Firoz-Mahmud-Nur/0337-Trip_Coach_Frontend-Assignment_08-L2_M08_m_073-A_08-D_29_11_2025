@@ -16,11 +16,12 @@ interface PackageCardProps {
 }
 
 export default function PackageCard({ package: pkg }: PackageCardProps) {
+  console.log(pkg);
   const image =
     pkg.images && pkg.images.length > 0 ? pkg.images[0] : "/dummy.jpg";
 
   return (
-    <Card className="group h-full flex flex-col overflow-hidden border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+    <Card className="group flex h-full flex-col overflow-hidden border-slate-200 bg-white pt-0 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
       <div className="relative aspect-video overflow-hidden bg-slate-100">
         <Image
           src={image}
@@ -49,7 +50,7 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="mt-auto flex flex-col gap-4 pb-4 pt-0">
+      <CardContent className="mt-auto flex flex-col gap-4 pt-0 pb-4">
         <div className="flex items-center justify-between text-sm text-slate-600">
           <div className="flex items-center gap-1">
             <MapPin size={16} className="text-blue-500" />
@@ -77,7 +78,8 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
           <Link href={`/package/${pkg._id}`} className="ml-auto">
             <Button
               size="sm"
-              className="rounded-full bg-blue-600 px-4 text-xs font-medium hover:bg-blue-700">
+              className="rounded-full bg-blue-600 px-4 text-xs font-medium hover:bg-blue-700"
+            >
               View details
             </Button>
           </Link>

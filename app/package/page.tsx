@@ -46,7 +46,7 @@ export default function PackagesPage() {
               transparent pricing for every kind of traveler.
             </p>
           </div>
-          <div className="rounded-full bg-white/70 px-4 py-2 text-xs text-slate-500 shadow-sm">
+          <div className="rounded-full border-slate-600 border bg-white/70 px-4 py-2 text-xs text-slate-500 shadow-sm">
             No hidden fees. Secure online booking.
           </div>
         </div>

@@ -195,6 +195,7 @@ export default function AdminPackages() {
 
       if (editingId) {
         const payload = buildPayload();
+
         await api.updatePackage(editingId, payload);
       } else {
         const payload = {
@@ -591,9 +592,7 @@ export default function AdminPackages() {
               </div>
 
               <div>
-                <Label className="text-slate-700">
-                  Image URLs (comma separated)
-                </Label>
+                <Label className="text-slate-700">Image URL</Label>
                 <Input
                   value={formData.images}
                   onChange={(e) =>
@@ -602,7 +601,7 @@ export default function AdminPackages() {
                       images: e.target.value,
                     })
                   }
-                  placeholder="https://..., https://..."
+                  placeholder="https://..."
                   className="mt-1"
                 />
               </div>

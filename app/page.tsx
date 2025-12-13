@@ -496,7 +496,7 @@ export default function Home() {
               </p>
 
               <div className="mt-6 flex flex-col items-center gap-3">
-                <Link href="/packages">
+                <Link href="/package">
                   <Button
                     size="lg"
                     className="bg-white font-semibold text-blue-600 shadow-md hover:bg-blue-50 hover:shadow-lg"

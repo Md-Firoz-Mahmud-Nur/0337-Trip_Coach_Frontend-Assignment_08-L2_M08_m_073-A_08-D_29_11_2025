@@ -59,6 +59,8 @@ export default function PackageDetailPage() {
 
   const pkg = localPackage || selectedPackage;
 
+  console.log(pkg);
+
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -241,14 +243,14 @@ export default function PackageDetailPage() {
               </div>
 
               <div className="mt-3 space-y-1 border-t border-slate-200 pt-3 text-xs text-slate-500">
-                <div className="flex justify-between">
-                  <span>Age range</span>
+                <div className="flex gap-1">
+                  <span>Age range :</span>
                   <span className="font-medium">
                     {pkg.minAge}-{pkg.maxAge} years
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Trip type</span>
+                <div className="flex gap-1">
+                  <span>Trip type :</span>
                   <span className="font-medium">
                     {(pkg.packageType as any)?.name ?? "N/A"}
                   </span>
