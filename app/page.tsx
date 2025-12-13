@@ -1,6 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { api } from "@/lib/api";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {
+  fetchPackagesError,
+  fetchPackagesStart,
+  fetchPackagesSuccess,
+} from "@/redux/slices/packagesSlice";
 import {
   Compass,
   Globe2,
@@ -12,8 +19,31 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Home() {
+  const dispatch = useAppDispatch();
+
+  const { items } = useAppSelector((state) => state.packages);
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      dispatch(fetchPackagesStart());
+      try {
+        const response = await api.getPackages();
+        dispatch(fetchPackagesSuccess(response.data.data));
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to fetch packages";
+        dispatch(fetchPackagesError(errorMessage));
+      }
+    };
+
+    if (items.length === 0) {
+      fetchPackages();
+    }
+  }, [dispatch, items.length]);
+
   return (
     <div className="min-h-screen">
       {/* 1. Hero */}
@@ -44,12 +74,14 @@ export default function Home() {
                   placeholder="Where are you going?"
                   className="flex-1 border-none bg-transparent text-sm text-slate-800 placeholder:text-slate-400 focus:ring-0 focus:outline-none md:text-base"
                 />
-                <Button
-                  size="sm"
-                  className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
-                >
-                  Search
-                </Button>
+                <Link href="/package">
+                  <Button
+                    size="sm"
+                    className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
+                  >
+                    Search
+                  </Button>
+                </Link>
               </div>
               <p className="mt-2 text-xs text-slate-400">
                 Try “Bangkok city tour”, “Bali beach getaway”, or “I want a food
@@ -68,7 +100,7 @@ export default function Home() {
                 </Button>
               </Link>
 
-              <Link href="/how-it-works">
+              <div>
                 <Button
                   size="lg"
                   variant="outline"
@@ -76,7 +108,7 @@ export default function Home() {
                 >
                   Learn more
                 </Button>
-              </Link>
+              </div>
             </div>
 
             <p className="mt-4 text-sm text-slate-400">
@@ -163,46 +195,26 @@ export default function Home() {
               ),
             )}
           </div>
-
           <div className="mt-10 grid gap-8 md:grid-cols-3">
-            {[
-              {
-                title: "Tropical Beach Escape",
-                location: "Bali, Indonesia",
-                duration: "7 days",
-                price: "From $899",
-              },
-              {
-                title: "European Capitals Tour",
-                location: "Paris • Rome • Barcelona",
-                duration: "10 days",
-                price: "From $1,499",
-              },
-              {
-                title: "Mountain Adventure Retreat",
-                location: "Swiss Alps",
-                duration: "5 days",
-                price: "From $1,099",
-              },
-            ].map((trip, index) => (
+            {items.slice(0, 3).map((pkg) => (
               <div
-                key={index}
+                key={pkg._id}
                 className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50/60 p-6 shadow-sm"
               >
                 <div>
                   <div className="mb-2 flex items-center gap-2 text-xs font-medium tracking-wide text-blue-600 uppercase">
                     <Globe2 size={14} />
-                    {trip.location}
+                    {pkg.destination}
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900">
-                    {trip.title}
+                    {pkg.title}
                   </h3>
                   <p className="mt-3 text-sm text-slate-600">
-                    {trip.duration} • {trip.price}
+                    {pkg.durationDays} days • From {pkg.costFrom} {pkg.currency}
                   </p>
                 </div>
                 <div className="mt-6">
-                  <Link href="/packages">
+                  <Link href={`/package/${pkg._id}`}>
                     <Button
                       size="sm"
                       className="w-full bg-blue-600 text-white hover:bg-blue-700"
@@ -358,7 +370,7 @@ export default function Home() {
                 </li>
               </ul>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link href="/become-a-guide">
+                <Link href="/be-guide">
                   <Button className="bg-blue-600 text-white hover:bg-blue-700">
                     Become a Guide
                   </Button>
