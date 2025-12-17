@@ -11,7 +11,7 @@ const userNav = [
   { href: "/tourist/profile", label: "Profile", icon: User },
 ];
 
-export default function UserSidebar() {
+export default function SidebarTourist() {
   const pathname = usePathname();
 
   return (

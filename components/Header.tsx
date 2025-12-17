@@ -40,7 +40,6 @@ export default function Header() {
   const links = [
     { href: "/", label: "Home" },
     { href: "/package", label: "Explore Tours" },
-    ...(!user ? [{ href: "/be-guide", label: "Become a Guide" }] : []),
 
     ...(user?.role === "TOURIST"
       ? [
