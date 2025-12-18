@@ -67,7 +67,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur-md supports-backdrop-filter:bg-white/70">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 pl-14 md:pl-0">
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/tripCoach.jpg"
@@ -76,7 +76,7 @@ export default function Header() {
             height={32}
             className="h-8 w-8"
           />
-          <span className="text-xl font-semibold tracking-tight text-slate-900">
+          <span className="hidden text-xl font-semibold tracking-tight text-slate-900 min-[400px]:block">
             Trip <span className="text-blue-600">Coach</span>
           </span>
         </Link>
