@@ -270,7 +270,7 @@ export default function AdminPackages() {
 
   return (
     <div className="space-y-6 p-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-slate-900">
             Packages Management
@@ -673,7 +673,7 @@ export default function AdminPackages() {
       )}
 
       <Card className="border border-blue-100 bg-white/90 shadow-sm">
-        <CardHeader className="flex items-center justify-between gap-4 border-b border-slate-100">
+        <CardHeader className="flex flex-col items-center justify-between gap-4 border-b border-slate-100 sm:flex-row">
           <CardTitle className="text-lg font-semibold text-slate-900">
             All Packages
           </CardTitle>
