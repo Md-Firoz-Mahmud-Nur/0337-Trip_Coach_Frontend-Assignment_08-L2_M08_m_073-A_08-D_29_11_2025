@@ -5,9 +5,9 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { sidebarIcons } from "./sidebarIcons";
+import { sidebarIcons } from "./SidebarIcon";
 
-import type { SidebarIconKey } from "./sidebarIcons";
+import type { SidebarIconKey } from "./SidebarIcon";
 
 type NavItem = {
   href: string;
