@@ -31,9 +31,20 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (isAuthenticated && user) {
-      router.push(
-        user.role === "ADMIN" ? "/admin/dashboard" : "/user/dashboard",
-      );
+      switch (user.role) {
+        case "ADMIN":
+          router.push("/admin/dashboard");
+          break;
+        case "GUIDE":
+          router.push("/guide/dashboard");
+          break;
+        case "TOURIST":
+          router.push("/tourist/dashboard");
+          break;
+        default:
+          router.push("/");
+          break;
+      }
     }
   }, [isAuthenticated, user, router]);
 
