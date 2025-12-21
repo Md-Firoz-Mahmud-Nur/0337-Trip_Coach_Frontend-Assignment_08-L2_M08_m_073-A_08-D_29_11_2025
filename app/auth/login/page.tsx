@@ -15,12 +15,14 @@ import { loginUser } from "@/redux/slices/authSlice";
 import { AlertCircle, Eye, EyeOff, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useEffect, useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
   const dispatch = useAppDispatch();
   const { isLoading, error, isAuthenticated, user } = useAppSelector(
     (state) => state.auth,
@@ -31,22 +33,26 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (isAuthenticated && user) {
-      switch (user.role) {
-        case "ADMIN":
-          router.push("/admin/dashboard");
-          break;
-        case "GUIDE":
-          router.push("/guide/dashboard");
-          break;
-        case "TOURIST":
-          router.push("/tourist/dashboard");
-          break;
-        default:
-          router.push("/");
-          break;
+      if (redirect) {
+        router.push(redirect);
+      } else {
+        switch (user.role) {
+          case "ADMIN":
+            router.push("/admin/dashboard");
+            break;
+          case "GUIDE":
+            router.push("/guide/dashboard");
+            break;
+          case "TOURIST":
+            router.push("/tourist/dashboard");
+            break;
+          default:
+            router.push("/");
+            break;
+        }
       }
     }
-  }, [isAuthenticated, user, router]);
+  }, [isAuthenticated, user, router, redirect]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,12 +61,17 @@ export default function LoginPage() {
 
     if (result.meta.requestStatus === "fulfilled") {
       const loggedInUser = result.payload as any;
-      if (loggedInUser?.role === "ADMIN") {
-        router.push("/admin/dashboard");
-      } else if (loggedInUser?.role === "GUIDE") {
-        router.push("/guide/dashboard");
+
+      if (redirect) {
+        router.push(redirect);
       } else {
-        router.push("/tourist/dashboard");
+        if (loggedInUser?.role === "ADMIN") {
+          router.push("/admin/dashboard");
+        } else if (loggedInUser?.role === "GUIDE") {
+          router.push("/guide/dashboard");
+        } else {
+          router.push("/tourist/dashboard");
+        }
       }
     }
   };

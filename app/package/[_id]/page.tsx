@@ -27,11 +27,13 @@ import {
   Users,
 } from "lucide-react";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function PackageDetailPage() {
   const params = useParams();
+  const { user } = useAppSelector((state) => state.auth);
+  const pathname = usePathname();
   const id = params._id as string;
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -110,6 +112,11 @@ export default function PackageDetailPage() {
     pkg.images && pkg.images.length > 0 ? pkg.images[0] : "/dummy.jpg";
 
   const handleBookNow = async () => {
+    if (!user) {
+      router.push(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
+      return;
+    }
+
     if (!pkg?._id) return;
 
     try {
