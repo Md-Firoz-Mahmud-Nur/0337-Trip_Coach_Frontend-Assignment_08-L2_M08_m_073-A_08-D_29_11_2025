@@ -200,7 +200,7 @@ export default function UserBookings() {
                                     booking? This action cannot be undone.
                                   </AlertDialogDescription>
                                 </AlertDialogHeader>
-                                <div className="flex gap-3">
+                                <div className="flex flex-col gap-3 sm:flex-row">
                                   <AlertDialogCancel>
                                     Keep Booking
                                   </AlertDialogCancel>

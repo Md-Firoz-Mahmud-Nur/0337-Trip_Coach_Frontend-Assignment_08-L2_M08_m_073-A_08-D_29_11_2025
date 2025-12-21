@@ -101,13 +101,15 @@ export default function Home() {
               </Link>
 
               <div>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="gap-2 border-blue-200 text-blue-700 hover:bg-blue-50"
-                >
-                  Learn more
-                </Button>
+                <Link href="/#learnMore" scroll={true}>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="gap-2 border-blue-200 text-blue-700 hover:bg-blue-50"
+                  >
+                    Learn more
+                  </Button>
+                </Link>
               </div>
             </div>
 
@@ -119,7 +121,7 @@ export default function Home() {
       </section>
 
       {/* 2. Why choose Trip Coach */}
-      <section className="bg-slate-50 py-16 md:py-24">
+      <section id="learnMore" className="bg-slate-50 py-16 md:py-24">
         <div className="container mx-auto px-4">
           <h2 className="text-center text-3xl font-bold text-slate-900 md:text-4xl">
             Why choose <span className="text-blue-600">Trip Coach?</span>
