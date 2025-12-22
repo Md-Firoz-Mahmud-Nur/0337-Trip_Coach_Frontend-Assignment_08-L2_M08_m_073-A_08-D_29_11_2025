@@ -204,7 +204,15 @@ export default function AdminPackages() {
         await api.createPackage(payload);
       }
 
-      const response = await api.getPackages();
+      // const response = await api.getPackages();
+      // const pkgs = Array.isArray(response.data)
+      //   ? response.data
+      //   : response.data.data || [];
+      // dispatch(fetchPackagesSuccess(pkgs));
+
+      if (!user?._id) return;
+
+      const response = await api.getGuidePackages(user._id);
       const pkgs = Array.isArray(response.data)
         ? response.data
         : response.data.data || [];
