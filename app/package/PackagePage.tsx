@@ -59,7 +59,6 @@ export default function PackagesPage() {
       const response = await api.getPackages(params);
       const { data, meta } = response.data;
 
-      console.log("data:", data);
       dispatch(fetchPackagesSuccess({ data, meta }));
     } catch (err) {
       const errorMessage =
