@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -22,7 +21,10 @@ import { useEffect, useState } from "react";
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect");
+  const redirect = searchParams.get("redirect")
+    ? decodeURIComponent(searchParams.get("redirect")!)
+    : null;
+
   const dispatch = useAppDispatch();
   const { isLoading, error, isAuthenticated, user } = useAppSelector(
     (state) => state.auth,
@@ -32,48 +34,22 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    if (isAuthenticated && user) {
-      if (redirect) {
-        router.push(redirect);
-      } else {
-        switch (user.role) {
-          case "ADMIN":
-            router.push("/admin/dashboard");
-            break;
-          case "GUIDE":
-            router.push("/guide/dashboard");
-            break;
-          case "TOURIST":
-            router.push("/tourist/dashboard");
-            break;
-          default:
-            router.push("/");
-            break;
-        }
-      }
-    }
-  }, [isAuthenticated, user, router, redirect]);
+    if (!isAuthenticated || !user) return;
+
+    const target =
+      redirect ??
+      (user.role === "ADMIN"
+        ? "/admin/dashboard"
+        : user.role === "GUIDE"
+          ? "/guide/dashboard"
+          : "/tourist/dashboard");
+
+    router.replace(target);
+  }, [isAuthenticated, user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const result = await dispatch(loginUser({ email, password }));
-
-    if (result.meta.requestStatus === "fulfilled") {
-      const loggedInUser = result.payload as any;
-
-      if (redirect) {
-        router.push(redirect);
-      } else {
-        if (loggedInUser?.role === "ADMIN") {
-          router.push("/admin/dashboard");
-        } else if (loggedInUser?.role === "GUIDE") {
-          router.push("/guide/dashboard");
-        } else {
-          router.push("/tourist/dashboard");
-        }
-      }
-    }
+    await dispatch(loginUser({ email, password }));
   };
 
   return (
