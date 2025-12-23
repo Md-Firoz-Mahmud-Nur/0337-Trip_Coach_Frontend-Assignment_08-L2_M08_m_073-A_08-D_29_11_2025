@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -29,6 +29,8 @@ export default function Home() {
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const { items } = useAppSelector((state) => state.packages);
+
+  const searchRef = useRef<HTMLDivElement | null>(null);
 
   const destinations = Array.from(
     new Set((items ?? []).map((pkg) => pkg.destination)),
@@ -67,6 +69,22 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/* 1. Hero */}
@@ -87,7 +105,10 @@ export default function Home() {
             </p>
             {/* HERO SEARCH BAR – ADDED */}
             <div className="mt-6 flex flex-col items-center">
-              <div className="relative flex h-12 w-full max-w-xl items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 shadow-sm">
+              <div
+                ref={searchRef}
+                className="relative flex h-12 w-full max-w-xl items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 shadow-sm"
+              >
                 <Search className="text-slate-400" size={18} />
                 <input
                   type="text"
