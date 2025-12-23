@@ -8,7 +8,17 @@ export default function UserLayout({
 }: {
   children: React.ReactNode;
 }) {
-  useRoleGuard({ allowedRoles: ["GUIDE"], redirectTo: "/" });
+  const { isLoading, isAuthenticated } = useRoleGuard({
+    allowedRoles: ["GUIDE"],
+  });
+
+  if (isLoading) {
+    return <div>loading</div>;
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
   {
     return (
       <div className="bg-background flex min-h-screen flex-col">

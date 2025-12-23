@@ -9,7 +9,16 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  useRoleGuard({ allowedRoles: ["ADMIN"], redirectTo: "/" });
+  const { isLoading, isAuthenticated } = useRoleGuard({ allowedRoles: ["ADMIN"] });
+
+  if (isLoading) {
+    return <div>loading</div>;
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
   {
     return (
       <div className="bg-background flex min-h-screen flex-col">
