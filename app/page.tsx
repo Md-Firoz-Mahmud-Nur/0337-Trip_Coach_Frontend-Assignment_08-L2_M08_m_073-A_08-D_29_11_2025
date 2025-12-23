@@ -19,30 +19,53 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const [query, setQuery] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const { items } = useAppSelector((state) => state.packages);
 
-  useEffect(() => {
-    const fetchPackages = async () => {
-      dispatch(fetchPackagesStart());
-      try {
-        const response = await api.getPackages();
-        dispatch(fetchPackagesSuccess(response.data.data));
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Failed to fetch packages";
-        dispatch(fetchPackagesError(errorMessage));
-      }
-    };
+  const destinations = Array.from(
+    new Set((items ?? []).map((pkg) => pkg.destination)),
+  );
 
-    if (items.length === 0) {
-      fetchPackages();
+  const filteredDestinations = destinations.filter((dest) =>
+    dest.toLowerCase().includes(query.toLowerCase()),
+  );
+
+  console.log("filteredDestinations", filteredDestinations);
+
+  const handleSearch = () => {
+    const trimmed = query.trim();
+    const params = new URLSearchParams();
+    if (trimmed) params.set("destination", trimmed);
+    router.push(`/package?${params.toString()}`);
+  };
+
+  const fetchPackages = async () => {
+    dispatch(fetchPackagesStart());
+    try {
+      const response = await api.getPackages({});
+      const { data, meta } = response.data;
+
+      console.log("data:", data);
+      dispatch(fetchPackagesSuccess({ data, meta }));
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch packages";
+      dispatch(fetchPackagesError(errorMessage));
     }
-  }, [dispatch, items.length]);
+  };
+
+  useEffect(() => {
+    fetchPackages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="min-h-screen">
@@ -53,39 +76,58 @@ export default function Home() {
             <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
               Your personal travel planner
             </span>
-
             <h1 className="mt-6 text-4xl font-bold tracking-tight text-balance text-slate-900 md:text-6xl">
               Explore the world with{" "}
               <span className="text-blue-600">Trip Coach</span>
             </h1>
-
             <p className="mt-4 text-base text-balance text-slate-600 md:mt-6 md:text-xl">
               Explore custom travel options that fit your preferences and price
               range. From seaside getaways to thrilling mountain journeys,
               discover your perfect vacation in no time.
             </p>
-
             {/* HERO SEARCH BAR – ADDED */}
             <div className="mt-6 flex flex-col items-center">
-              <div className="flex w-full max-w-xl items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 shadow-sm">
+              <div className="relative flex h-12 w-full max-w-xl items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 shadow-sm">
                 <Search className="text-slate-400" size={18} />
                 <input
                   type="text"
                   placeholder="Where are you going?"
+                  value={query}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                    setShowSuggestions(true);
+                  }}
+                  onFocus={() => setShowSuggestions(true)}
                   className="flex-1 border-none bg-transparent text-sm text-slate-800 placeholder:text-slate-400 focus:ring-0 focus:outline-none md:text-base"
                 />
-                <Link href="/package">
-                  <Button
-                    size="sm"
-                    className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
-                  >
-                    Search
-                  </Button>
-                </Link>
+                <Button
+                  size="sm"
+                  onClick={handleSearch}
+                  className="absolute right-2 rounded-full bg-blue-600 text-white hover:bg-blue-700"
+                >
+                  Search
+                </Button>
+
+                {showSuggestions && filteredDestinations.length > 0 && (
+                  <ul className="absolute top-full left-0 z-10 mt-2 max-h-56 w-full max-w-xl overflow-y-auto rounded-2xl border border-slate-200 bg-white py-2 text-sm shadow-lg">
+                    {filteredDestinations.map((dest) => (
+                      <li
+                        key={dest}
+                        onMouseDown={() => {
+                          setQuery(dest);
+                          setShowSuggestions(false);
+                        }}
+                        className="cursor-pointer px-4 py-2 text-slate-700 hover:bg-slate-100"
+                      >
+                        {dest}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
+
               <p className="mt-2 text-xs text-slate-400">
-                Try “Bangkok city tour”, “Bali beach getaway”, or “I want a food
-                trip”.
+                Try like “Bangkok”, “Reykjavik”, “Dubai”.
               </p>
             </div>
 
@@ -112,7 +154,6 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-
             <p className="mt-4 text-sm text-slate-400">
               No hidden fees. Flexible dates. Expert support.
             </p>
