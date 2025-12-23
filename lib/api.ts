@@ -42,7 +42,8 @@ export const api = {
   resetPassword: (payload: { password: string; updatePassword: string }) =>
     apiClient.post("/auth/reset-password", payload),
 
-  getPackages: () => apiClient.get("/package/all"),
+  getPackages: (params?: Record<string, string | number>) =>
+    apiClient.get("/package/all", { params }),
 
   getGuidePackages: (guideId: string) =>
     apiClient.get(`/package/my/${guideId}`),

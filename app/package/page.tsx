@@ -9,29 +9,57 @@ import {
   fetchPackagesSuccess,
 } from "@/redux/slices/packagesSlice";
 import { AlertCircle, Loader2 } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 export default function PackagesPage() {
   const dispatch = useAppDispatch();
-  const { items, isLoading, error } = useAppSelector((state) => state.packages);
+  const { items, isLoading, error, meta } = useAppSelector(
+    (state) => state.packages,
+  );
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const destination = searchParams.get("destination") || "";
+  const page = Number(searchParams.get("page") || "1");
+  const limit = 10;
+
+  const fetchPackages = async () => {
+    dispatch(fetchPackagesStart());
+    try {
+      const params: Record<string, string | number> = {
+        page,
+        limit,
+      };
+      if (destination) {
+        params.destination = destination;
+      }
+
+      const response = await api.getPackages(params);
+      const { data, meta } = response.data;
+
+      console.log("data:", data);
+      dispatch(fetchPackagesSuccess({ data, meta }));
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch packages";
+      dispatch(fetchPackagesError(errorMessage));
+    }
+  };
 
   useEffect(() => {
-    const fetchPackages = async () => {
-      dispatch(fetchPackagesStart());
-      try {
-        const response = await api.getPackages();
-        dispatch(fetchPackagesSuccess(response.data.data));
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Failed to fetch packages";
-        dispatch(fetchPackagesError(errorMessage));
-      }
-    };
+    fetchPackages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [destination, page]);
 
-    if (items.length === 0) {
-      fetchPackages();
-    }
-  }, [dispatch, items.length]);
+  const totalPages = meta?.totalPage || 1;
+
+  const changePage = (newPage: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", newPage.toString());
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 py-12">
@@ -45,6 +73,11 @@ export default function PackagesPage() {
               Handpicked trips with trusted guides, flexible dates, and
               transparent pricing for every kind of traveler.
             </p>
+            {destination && (
+              <p className="mt-1 text-sm text-slate-500">
+                Showing results for “{destination}”
+              </p>
+            )}
           </div>
           <div className="rounded-full border border-slate-600 bg-white/70 px-4 py-2 text-xs text-slate-500 shadow-sm">
             No hidden fees. Secure online booking.
@@ -66,11 +99,36 @@ export default function PackagesPage() {
             <Loader2 className="animate-spin text-blue-600" size={32} />
           </div>
         ) : items.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {items.map((pkg) => (
-              <PackageCard key={pkg._id} package={pkg} />
-            ))}
-          </div>
+          <>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {items.map((pkg) => (
+                <PackageCard key={pkg._id} package={pkg} />
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 0 && (
+              <div className="mt-10 flex items-center justify-center gap-2 text-sm">
+                <button
+                  disabled={page <= 1}
+                  onClick={() => changePage(page - 1)}
+                  className="rounded-full border border-slate-300 px-3 py-1 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Prev
+                </button>
+                <span className="px-3 py-1 text-slate-600">
+                  Page {page} of {totalPages}
+                </span>
+                <button
+                  disabled={page >= totalPages}
+                  onClick={() => changePage(page + 1)}
+                  className="rounded-full border border-slate-300 px-3 py-1 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <div className="rounded-xl border border-dashed border-slate-200 bg-red-50 py-16 text-center">
             <p className="text-lg font-medium text-red-600">

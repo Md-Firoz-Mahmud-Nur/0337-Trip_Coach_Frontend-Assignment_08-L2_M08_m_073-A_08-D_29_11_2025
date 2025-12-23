@@ -16,7 +16,6 @@ interface PackageCardProps {
 }
 
 export default function PackageCard({ package: pkg }: PackageCardProps) {
-  console.log(pkg);
   const image =
     pkg.images && pkg.images.length > 0 ? pkg.images[0] : "/dummy.jpg";
 
