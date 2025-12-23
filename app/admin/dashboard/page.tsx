@@ -49,8 +49,6 @@ export default function AdminDashboard() {
       const bookings = bookingsRes.data?.data || [];
       const payments = bookingsRes.data?.data || [];
 
-      console.log({payments});
-
       const totalRevenue = payments.reduce((sum: number, p: any) => {
         return p.paymentStatus === "PAID" ? sum + (p.totalAmount || 0) : sum;
       }, 0);

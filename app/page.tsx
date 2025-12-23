@@ -40,8 +40,6 @@ export default function Home() {
     dest.toLowerCase().includes(query.toLowerCase()),
   );
 
-  console.log("filteredDestinations", filteredDestinations);
-
   const handleSearch = () => {
     const trimmed = query.trim();
     const params = new URLSearchParams();
@@ -55,7 +53,6 @@ export default function Home() {
       const response = await api.getPackages({});
       const { data, meta } = response.data;
 
-      console.log("data:", data);
       dispatch(fetchPackagesSuccess({ data, meta }));
     } catch (err) {
       const errorMessage =

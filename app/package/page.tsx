@@ -1,6 +1,7 @@
 "use client";
 
 import PackageCard from "@/components/PackageCard";
+import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
@@ -8,9 +9,9 @@ import {
   fetchPackagesStart,
   fetchPackagesSuccess,
 } from "@/redux/slices/packagesSlice";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle, Loader2, Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function PackagesPage() {
   const dispatch = useAppDispatch();
@@ -22,6 +23,25 @@ export default function PackagesPage() {
   const pathname = usePathname();
 
   const destination = searchParams.get("destination") || "";
+  const [localQuery, setLocalQuery] = useState(destination); // sync with URL
+
+  const applySearch = () => {
+    const params = new URLSearchParams(searchParams);
+    if (localQuery.trim()) {
+      params.set("destination", localQuery.trim());
+      params.set("page", "1"); // reset to first page on new search
+    } else {
+      params.delete("destination");
+      params.set("page", "1");
+    }
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  // keep input in sync when user arrives via URL
+  useEffect(() => {
+    setLocalQuery(destination);
+  }, [destination]);
+
   const page = Number(searchParams.get("page") || "1");
   const limit = 10;
 
@@ -73,14 +93,30 @@ export default function PackagesPage() {
               Handpicked trips with trusted guides, flexible dates, and
               transparent pricing for every kind of traveler.
             </p>
-            {destination && (
-              <p className="mt-1 text-sm text-slate-500">
-                Showing results for “{destination}”
-              </p>
-            )}
           </div>
           <div className="rounded-full border border-slate-600 bg-white/70 px-4 py-2 text-xs text-slate-500 shadow-sm">
             No hidden fees. Secure online booking.
+          </div>
+        </div>
+
+        {/* Search bar on packages page */}
+        <div className="mb-6 flex justify-center">
+          <div className="relative flex h-12 w-full max-w-xl items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 shadow-sm">
+            <Search className="text-slate-400" size={18} />
+            <input
+              type="text"
+              placeholder="Where are you going?"
+              value={localQuery}
+              onChange={(e) => setLocalQuery(e.target.value)}
+              className="flex-1 border-none bg-transparent text-sm text-slate-800 placeholder:text-slate-400 focus:ring-0 focus:outline-none md:text-base"
+            />
+            <Button
+              size="sm"
+              onClick={applySearch}
+              className="absolute right-2 rounded-full bg-blue-600 text-white hover:bg-blue-700"
+            >
+              Search
+            </Button>
           </div>
         </div>
 
